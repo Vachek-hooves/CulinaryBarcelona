@@ -40,7 +40,7 @@ const Main = ({navigation}) => {
   const [isSearching, setIsSearching] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   // console.log(selectedCategory)
-  console.log(favorites);
+  // console.log(favorites);
 
   const handleSearch = () => {
     setIsSearching(true);

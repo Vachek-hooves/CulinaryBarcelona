@@ -18,6 +18,7 @@ const SearchingResults = ({route}) => {
   const [randomPlace, setRandomPlace] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
   console.log(category, 'category');
+  console.log(randomPlace.coordinates)
 
 
   const getRandomPlace = () => {
