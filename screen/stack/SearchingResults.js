@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Share,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {PLACES} from '../../data/places';
@@ -12,12 +13,12 @@ import SearchingPlace from '../../components/ui/SearchingPlace';
 import {useBarcelonaContext} from '../../store/context';
 
 const SearchingResults = ({route}) => {
-  const {hello} = useBarcelonaContext();
+  const {favorites, toggleFavorite, isFavorite} = useBarcelonaContext();
   const {category} = route.params;
   const [randomPlace, setRandomPlace] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
   console.log(category, 'category');
-  console.log(hello);
+
 
   const getRandomPlace = () => {
     setIsSearching(true);
@@ -52,6 +53,21 @@ const SearchingResults = ({route}) => {
     const currentDay = daysMap[today.getDay()];
 
     return randomPlace.hours[currentDay];
+  };
+
+  const handleShare = async () => {
+    try {
+      await Share.share({
+        message: `Check out ${randomPlace.name}!\n\n${randomPlace.description}\n\nAddress: ${randomPlace.address}\nHours today: ${getTodayHours()}`,
+        title: randomPlace.name,
+      });
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
+  };
+
+  const handleBookmark = () => {
+    toggleFavorite(randomPlace);
   };
 
   if (isSearching) {
@@ -91,21 +107,23 @@ const SearchingResults = ({route}) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.iconButton}
-              onPress={() => {
-                /* Handle bookmark */
-              }}>
+              style={[
+                styles.iconButton,
+                isFavorite(randomPlace.id) && styles.iconButtonActive
+              ]}
+              onPress={handleBookmark}>
               <Image
                 source={require('../../assets/icons/bookmark.png')}
-                style={styles.actionIcon}
+                style={[
+                  styles.actionIcon,
+                  isFavorite(randomPlace.id) && styles.actionIconActive
+                ]}
               />
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.iconButton}
-              onPress={() => {
-                /* Handle share */
-              }}>
+              onPress={handleShare}>
               <Image
                 source={require('../../assets/icons/share.png')}
                 style={styles.actionIcon}
@@ -216,5 +234,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  iconButtonActive: {
+    backgroundColor: '#FF4B55',
+  },
+  actionIconActive: {
+    tintColor: 'white',
   },
 });

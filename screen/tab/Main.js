@@ -10,7 +10,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import CustomLoader from '../../components/ui/CustomLoader';
 import SearchingPlace from '../../components/ui/SearchingPlace';
-import { useState } from 'react';
+import {useState} from 'react';
 const categories = [
   {
     id: 1,
@@ -33,11 +33,14 @@ const categories = [
     icon: require('../../assets/icons/wine.png'),
   },
 ];
+import {useBarcelonaContext} from '../../store/context';
 
 const Main = ({navigation}) => {
+  const {favorites} = useBarcelonaContext();
   const [isSearching, setIsSearching] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   // console.log(selectedCategory)
+  console.log(favorites);
 
   const handleSearch = () => {
     setIsSearching(true);
@@ -46,7 +49,7 @@ const Main = ({navigation}) => {
       navigation.navigate('SearchingResults', {
         category: selectedCategory,
       });
-    }, 1500)
+    }, 1500);
   };
 
   if (isSearching) {
