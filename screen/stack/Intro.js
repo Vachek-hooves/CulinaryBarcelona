@@ -1,7 +1,12 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
-import React from 'react'
+import { useEffect } from 'react'
 
-const Intro = () => {
+const Intro = ({navigation}) => {
+    useEffect(() => {
+        setTimeout(() => {
+            navigation.navigate('OnBoarding')
+        }, 3000)
+    }, [])
   return (
     <View style={styles.container}>
       <Image 
