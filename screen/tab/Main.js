@@ -36,12 +36,15 @@ const categories = [
 
 const Main = ({navigation}) => {
   const [isSearching, setIsSearching] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleSearch = () => {
     setIsSearching(true);
     setTimeout(() => {
       setIsSearching(false);
-      navigation.navigate('SearchingResults');
+      navigation.navigate('SearchingResults', {
+        category: selectedCategory,
+      });
     }, 3000)
   };
 
@@ -71,7 +74,12 @@ const Main = ({navigation}) => {
                 {categories.map(category => (
                   <TouchableOpacity
                     key={category.id}
-                    style={styles.categoryCard}>
+                    style={[
+                      styles.categoryCard,
+                      selectedCategory?.id === category.id &&
+                        styles.selectedCategory,
+                    ]}
+                    onPress={() => setSelectedCategory(category)}>
                     <Image source={category.icon} style={styles.categoryIcon} />
                     <Text style={styles.categoryTitle}>{category.title}</Text>
                   </TouchableOpacity>
@@ -99,6 +107,10 @@ const Main = ({navigation}) => {
 export default Main;
 
 const styles = StyleSheet.create({
+  selectedCategory: {
+    borderColor: '#FF4B55',
+    borderWidth: 2,
+  },
   container: {
     flex: 1,
     backgroundColor: '#000000',
