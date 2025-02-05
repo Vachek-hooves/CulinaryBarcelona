@@ -1,14 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native'
+import {StyleSheet, Text, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {Main} from '../tab';
+const Tab = createBottomTabNavigator();
 
 const TabMenu = () => {
   return (
-    <View>
-      <Text>TabMenu</Text>
-    </View>
-  )
-}
+    <Tab.Navigator
+      screenOptions={{
+        tabBarShowLabel: false,
+        headerShown: false,
+      }}>
+      <Tab.Screen name="Main" component={Main} />
+    </Tab.Navigator>
+  );
+};
 
-export default TabMenu
+export default TabMenu;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

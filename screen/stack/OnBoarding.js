@@ -38,12 +38,14 @@ const onboardingData = [
   }
 ]
 
-const OnBoarding = () => {
+const OnBoarding = ({navigation}) => {
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const handleNext = () => {
     if (currentIndex < onboardingData.length - 1) {
       setCurrentIndex(currentIndex + 1)
+    }else{
+      navigation.navigate('TabMenu')
     }
   }
 
