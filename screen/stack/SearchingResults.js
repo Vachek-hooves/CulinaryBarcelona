@@ -9,22 +9,27 @@ import {
 import React, {useEffect, useState} from 'react';
 import {PLACES} from '../../data/places';
 import SearchingPlace from '../../components/ui/SearchingPlace';
+import {useBarcelonaContext} from '../../store/context';
 
 const SearchingResults = ({route}) => {
+  const {hello} = useBarcelonaContext();
   const {category} = route.params;
   const [randomPlace, setRandomPlace] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
   console.log(category, 'category');
+  console.log(hello);
 
   const getRandomPlace = () => {
     setIsSearching(true);
     // Simulate search delay
     setTimeout(() => {
-      const placesInCategory = PLACES.filter(place => place.category === category.title);
+      const placesInCategory = PLACES.filter(
+        place => place.category === category.title,
+      );
       const randomIndex = Math.floor(Math.random() * placesInCategory.length);
       setRandomPlace(placesInCategory[randomIndex]);
       setIsSearching(false);
-    }, 1500); 
+    }, 1500);
   };
 
   useEffect(() => {
@@ -109,9 +114,7 @@ const SearchingResults = ({route}) => {
           </View>
         </View>
 
-        <TouchableOpacity
-          style={styles.searchButton}
-          onPress={getRandomPlace}>
+        <TouchableOpacity style={styles.searchButton} onPress={getRandomPlace}>
           <Text style={styles.searchButtonText}>Search new</Text>
         </TouchableOpacity>
       </ScrollView>
