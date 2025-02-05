@@ -11,15 +11,14 @@ import React, {useEffect, useState} from 'react';
 import {PLACES} from '../../data/places';
 import SearchingPlace from '../../components/ui/SearchingPlace';
 import {useBarcelonaContext} from '../../store/context';
+import MapModal from '../../components/ui/MapModal';
 
 const SearchingResults = ({route}) => {
   const {favorites, toggleFavorite, isFavorite} = useBarcelonaContext();
   const {category} = route.params;
   const [randomPlace, setRandomPlace] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
-  console.log(category, 'category');
-  console.log(randomPlace.coordinates)
-
+  const [isMapVisible, setIsMapVisible] = useState(false);
 
   const getRandomPlace = () => {
     setIsSearching(true);
@@ -37,6 +36,15 @@ const SearchingResults = ({route}) => {
   useEffect(() => {
     getRandomPlace();
   }, [category]);
+
+  // Early return if still searching or no place loaded
+  if (isSearching) {
+    return <SearchingPlace category={category.title} />;
+  }
+
+  if (!randomPlace) {
+    return null;
+  }
 
   const getTodayHours = () => {
     const today = new Date();
@@ -59,7 +67,9 @@ const SearchingResults = ({route}) => {
   const handleShare = async () => {
     try {
       await Share.share({
-        message: `Check out ${randomPlace.name}!\n\n${randomPlace.description}\n\nAddress: ${randomPlace.address}\nHours today: ${getTodayHours()}`,
+        message: `Check out ${randomPlace.name}!\n\n${
+          randomPlace.description
+        }\n\nAddress: ${randomPlace.address}\nHours today: ${getTodayHours()}`,
         title: randomPlace.name,
       });
     } catch (error) {
@@ -71,11 +81,15 @@ const SearchingResults = ({route}) => {
     toggleFavorite(randomPlace);
   };
 
-  if (isSearching) {
-    return <SearchingPlace category={category.title} />;
-  }
+  const handleOpenMap = () => {
+    if (randomPlace?.coordinates) {
+      setIsMapVisible(true);
+    }
+  };
 
-  if (!randomPlace) return null;
+  const handleCloseMap = () => {
+    setIsMapVisible(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -101,30 +115,26 @@ const SearchingResults = ({route}) => {
           <View style={styles.actionButtons}>
             <TouchableOpacity
               style={styles.mapsButton}
-              onPress={() => {
-                /* Handle maps navigation */
-              }}>
+              onPress={handleOpenMap}>
               <Text style={styles.mapsButtonText}>Open in maps</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={[
                 styles.iconButton,
-                isFavorite(randomPlace.id) && styles.iconButtonActive
+                isFavorite(randomPlace.id) && styles.iconButtonActive,
               ]}
               onPress={handleBookmark}>
               <Image
                 source={require('../../assets/icons/bookmark.png')}
                 style={[
                   styles.actionIcon,
-                  isFavorite(randomPlace.id) && styles.actionIconActive
+                  isFavorite(randomPlace.id) && styles.actionIconActive,
                 ]}
               />
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.iconButton}
-              onPress={handleShare}>
+            <TouchableOpacity style={styles.iconButton} onPress={handleShare}>
               <Image
                 source={require('../../assets/icons/share.png')}
                 style={styles.actionIcon}
@@ -137,6 +147,15 @@ const SearchingResults = ({route}) => {
           <Text style={styles.searchButtonText}>Search new</Text>
         </TouchableOpacity>
       </ScrollView>
+
+      {randomPlace && (
+        <MapModal
+          isVisible={isMapVisible}
+          onClose={handleCloseMap}
+          coordinates={randomPlace.coordinates}
+          placeName={randomPlace.name}
+        />
+      )}
     </View>
   );
 };
