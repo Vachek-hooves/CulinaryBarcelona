@@ -112,6 +112,7 @@ const Favorites = () => {
           placeName={selectedPlace.name}
         />
       )}
+      <View style={{height: 90}} />
     </View>
   );
 };
