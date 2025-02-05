@@ -5,7 +5,7 @@ const Intro = ({navigation}) => {
     useEffect(() => {
         setTimeout(() => {
             navigation.navigate('OnBoarding')
-        }, 3000)
+        }, 1000)
     }, [])
   return (
     <View style={styles.container}>

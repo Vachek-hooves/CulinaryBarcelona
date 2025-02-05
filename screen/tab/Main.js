@@ -8,7 +8,9 @@ import {
   ScrollView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-
+import CustomLoader from '../../components/ui/CustomLoader';
+import SearchingPlace from '../../components/ui/SearchingPlace';
+import { useState } from 'react';
 const categories = [
   {
     id: 1,
@@ -32,21 +34,36 @@ const categories = [
   },
 ];
 
-const Main = () => {
+const Main = ({navigation}) => {
+  const [isSearching, setIsSearching] = useState(false);
+
+  const handleSearch = () => {
+    setIsSearching(true);
+    setTimeout(() => {
+      setIsSearching(false);
+      navigation.navigate('SearchingResults');
+    }, 3000)
+  };
+
+  if (isSearching) {
+    return <SearchingPlace />;
+  }
+
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <ImageBackground
-          source={require('../../assets/image/onboarding/i5.png')}
-          style={styles.backgroundImage}>
-          <LinearGradient
-            colors={['transparent', 'rgba(0,0,0,0.8)', '#000000']}
-            style={styles.gradient}>
+      <ImageBackground
+        source={require('../../assets/image/onboarding/i5.png')}
+        style={styles.backgroundImage}>
+        <LinearGradient
+          colors={['transparent', 'rgba(0,0,0,0.8)', '#000000']}
+          style={styles.gradient}>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.content}>
               <Image
                 source={require('../../assets/image/logo/logo.png')}
                 style={styles.logo}
               />
+
               {/* <Text style={styles.logo}>CULINARY BARCELONA</Text> */}
 
               <Text style={styles.sectionTitle}>Explore Categories</Text>
@@ -65,14 +82,16 @@ const Main = () => {
                 <Text style={styles.gameSectionTitle}>
                   Play 'Guess the Dish'
                 </Text>
-                <TouchableOpacity style={styles.playButton}>
-                  <Text style={styles.playButtonText}>Play</Text>
+                <TouchableOpacity
+                  style={styles.playButton}
+                  onPress={handleSearch}>
+                  <Text style={styles.playButtonText}>Search</Text>
                 </TouchableOpacity>
               </View>
             </View>
-          </LinearGradient>
-        </ImageBackground>
-      </ScrollView>
+          </ScrollView>
+        </LinearGradient>
+      </ImageBackground>
     </View>
   );
 };
