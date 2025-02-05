@@ -13,7 +13,7 @@ import SearchingPlace from '../../components/ui/SearchingPlace';
 import {useBarcelonaContext} from '../../store/context';
 import MapModal from '../../components/ui/MapModal';
 
-const SearchingResults = ({route}) => {
+const SearchingResults = ({route, navigation}) => {
   const {favorites, toggleFavorite, isFavorite} = useBarcelonaContext();
   const {category} = route.params;
   const [randomPlace, setRandomPlace] = useState(null);
@@ -96,7 +96,17 @@ const SearchingResults = ({route}) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{flexGrow: 1, paddingTop: 40}}>
-        <Text style={styles.categoryTitle}>{category.title}</Text>
+        <View style={styles.headerContainer}>
+          <Text style={styles.categoryTitle}>{category.title}</Text>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigation.navigate('TabMenu', {screen: 'Main'})}>
+            <Image
+              source={require('../../assets/icons/home.png')}
+              style={styles.homeIcon}
+            />
+          </TouchableOpacity>
+        </View>
 
         <Image source={{uri: randomPlace.image}} style={styles.placeImage} />
 
@@ -113,9 +123,7 @@ const SearchingResults = ({route}) => {
           </View>
 
           <View style={styles.actionButtons}>
-            <TouchableOpacity
-              style={styles.mapsButton}
-              onPress={handleOpenMap}>
+            <TouchableOpacity style={styles.mapsButton} onPress={handleOpenMap}>
               <Text style={styles.mapsButtonText}>Open in maps</Text>
             </TouchableOpacity>
 
@@ -163,6 +171,25 @@ const SearchingResults = ({route}) => {
 export default SearchingResults;
 
 const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  backButton: {
+    // position: 'absolute',
+    // top: 20,
+    // left: 20,
+    backgroundColor: '#DF393E',
+    padding: 10,
+    borderRadius: 12,
+    width: 55,
+    margin: 20,
+  },
+  homeIcon: {
+    width: 34,
+    height: 34,
+  },
   container: {
     flex: 1,
     backgroundColor: '#000000',
