@@ -25,6 +25,24 @@ const SearchingResults = ({route}) => {
     setRandomPlace(placesInCategory[randomIndex]);
   }, []);
 
+  const getTodayHours = () => {
+    const today = new Date();
+  
+    const daysMap = {
+      0: 'sun',
+      1: 'mon',
+      2: 'tue',
+      3: 'wed',
+      4: 'thu',
+      5: 'fri',
+      6: 'sat'
+    };
+    
+    const currentDay = daysMap[today.getDay()];
+    
+    return randomPlace.hours[currentDay];
+  };
+
   if (!randomPlace) return null;
 
   return (
@@ -45,7 +63,7 @@ const SearchingResults = ({route}) => {
               source={require('../../assets/icons/clock.png')}
               style={styles.clockIcon}
             />
-            <Text style={styles.hoursText}>Hours: {randomPlace.hours.mon}</Text>
+            <Text style={styles.hoursText}>Hours: {getTodayHours()}</Text>
           </View>
 
           <View style={styles.actionButtons}>
