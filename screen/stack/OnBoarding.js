@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions } from 'react-native'
 import React, { useState } from 'react'
+import LinearGradient from 'react-native-linear-gradient'
 
 const { width } = Dimensions.get('window')
 
@@ -63,21 +64,25 @@ const OnBoarding = () => {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={onboardingData[currentIndex].image}
-        style={styles.backgroundImage}
-      />
-      <View style={styles.overlay}>
-        <Text style={styles.logo}>CULINARY BARCELONA</Text>
-        <View style={styles.contentContainer}>
-          <Text style={styles.title}>{onboardingData[currentIndex].title}</Text>
-          {onboardingData[currentIndex].description ? (
-            <Text style={styles.description}>{onboardingData[currentIndex].description}</Text>
-          ) : renderCategories()}
-          <TouchableOpacity style={styles.button} onPress={handleNext}>
-            <Text style={styles.buttonText}>{onboardingData[currentIndex].buttonText}</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.imageContainer}>
+        <Image
+          source={onboardingData[currentIndex].image}
+          style={styles.backgroundImage}
+        />
+        <LinearGradient
+          colors={['transparent', 'rgba(0,0,0,0.5)', 'rgba(0,0,0,0.8)', '#000000']}
+          style={styles.gradient}
+          locations={[0, 0.7, 0.8, 0.9]}
+        />
+      </View>
+      <View style={styles.contentContainer}>
+        <Text style={styles.title}>{onboardingData[currentIndex].title}</Text>
+        {onboardingData[currentIndex].description ? (
+          <Text style={styles.description}>{onboardingData[currentIndex].description}</Text>
+        ) : renderCategories()}
+        <TouchableOpacity style={styles.button} onPress={handleNext}>
+          <Text style={styles.buttonText}>{onboardingData[currentIndex].buttonText}</Text>
+        </TouchableOpacity>
       </View>
     </View>
   )
@@ -88,45 +93,48 @@ export default OnBoarding
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#000000',
+  },
+  imageContainer: {
+    height: '60%', // Image takes up roughly half the screen
+    position: 'relative',
   },
   backgroundImage: {
-    width: width,
+    width: '100%',
     height: '100%',
+  },
+  gradient: {
     position: 'absolute',
-  },
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    padding: 20,
-    justifyContent: 'space-between',
-    paddingTop: 100,
-  },
-  logo: {
-    color: 'white',
-    fontSize: 28,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: '100%',
   },
   contentContainer: {
-    marginBottom: 50,
+    flex: 1,
+    padding: 20,
+    paddingTop: 30,
   },
   title: {
     color: 'white',
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 15,
   },
   description: {
     color: 'white',
     fontSize: 16,
-    marginBottom: 30,
     lineHeight: 24,
+    marginBottom: 30,
+    opacity: 0.8,
   },
   button: {
     backgroundColor: '#FF4B55',
-    padding: 15,
+    padding: 18,
     borderRadius: 8,
     alignItems: 'center',
+    marginTop: 'auto', // Pushes button to bottom
+    marginBottom: 20,
   },
   buttonText: {
     color: 'white',
