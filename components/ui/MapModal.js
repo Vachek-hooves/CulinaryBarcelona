@@ -1,15 +1,15 @@
 import React from 'react';
-import { Modal, View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import {Modal, View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import MapView, {Marker} from 'react-native-maps';
 
-const MapModal = ({ isVisible, onClose, coordinates, placeName }) => {
+const MapModal = ({isVisible, onClose, coordinates, placeName}) => {
+  console.log(coordinates);
   return (
     <Modal
       animationType="slide"
       transparent={true}
       visible={isVisible}
-      onRequestClose={onClose}
-    >
+      onRequestClose={onClose}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <MapView
@@ -19,18 +19,11 @@ const MapModal = ({ isVisible, onClose, coordinates, placeName }) => {
               longitude: coordinates.longitude,
               latitudeDelta: 0.005,
               longitudeDelta: 0.005,
-            }}
-          >
-            <Marker
-              coordinate={coordinates}
-              title={placeName}
-            />
+            }}>
+            <Marker coordinate={coordinates} title={placeName} />
           </MapView>
-          
-          <TouchableOpacity 
-            style={styles.closeButton}
-            onPress={onClose}
-          >
+
+          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Text style={styles.closeButtonText}>Close</Text>
           </TouchableOpacity>
         </View>

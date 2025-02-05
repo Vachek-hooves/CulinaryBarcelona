@@ -1,6 +1,6 @@
 import {StyleSheet, Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Main, Profile, Map, Favotites, Game} from '../tab';
+import {Main, Profile, Map, Favotites, Game, Favorites} from '../tab';
 
 const Tab = createBottomTabNavigator();
 
@@ -61,7 +61,7 @@ const TabMenu = () => {
       />
       <Tab.Screen
         name="Favorites"
-        component={Favotites}
+        component={Favorites}
         options={{
           tabBarIcon: ({focused}) => (
             <Image

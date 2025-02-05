@@ -4,10 +4,12 @@ import {
   View,
   Image,
   TouchableOpacity,
-  ScrollView,Share
+  ScrollView,
+  Share,
 } from 'react-native';
 import {useBarcelonaContext} from '../../store/context';
 import MapModal from '../../components/ui/MapModal';
+import {useState} from 'react';
 
 const Favorites = () => {
   const {favorites, toggleFavorite} = useBarcelonaContext();
@@ -28,7 +30,7 @@ const Favorites = () => {
     return place.hours[currentDay];
   };
 
-  const handleShare = async (place) => {
+  const handleShare = async place => {
     try {
       await Share.share({
         message: `Check out ${place.name}!\n\n${place.description}\n\nAddress: ${place.address}\nHours today: ${getTodayHours(place)}`,
@@ -73,10 +75,9 @@ const Favorites = () => {
               </View>
 
               <View style={styles.actionButtons}>
-              <TouchableOpacity 
+                <TouchableOpacity
                   style={styles.mapsButton}
-                  onPress={() => setSelectedPlace(place)}
-                >
+                  onPress={() => setSelectedPlace(place)}>
                   <Text style={styles.mapsButtonText}>Open in maps</Text>
                 </TouchableOpacity>
 
@@ -89,7 +90,9 @@ const Favorites = () => {
                   />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.iconButton} onPress={() => handleShare(place)}>
+                <TouchableOpacity
+                  style={styles.iconButton}
+                  onPress={() => handleShare(place)}>
                   <Image
                     source={require('../../assets/icons/share.png')}
                     style={styles.actionIcon}
@@ -100,12 +103,15 @@ const Favorites = () => {
           </View>
         ))}
       </ScrollView>
-      <MapModal
-        isVisible={!!selectedPlace}
-        onClose={() => setSelectedPlace(null)}
-        coordinates={selectedPlace?.coordinates}
-        placeName={selectedPlace?.name}
-      />
+
+      {selectedPlace && (
+        <MapModal
+          isVisible={true}
+          onClose={() => setSelectedPlace(null)}
+          coordinates={selectedPlace.coordinates}
+          placeName={selectedPlace.name}
+        />
+      )}
     </View>
   );
 };
