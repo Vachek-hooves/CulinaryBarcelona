@@ -37,7 +37,7 @@ const categories = [
 const Main = ({navigation}) => {
   const [isSearching, setIsSearching] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  console.log(selectedCategory)
+  // console.log(selectedCategory)
 
   const handleSearch = () => {
     setIsSearching(true);
@@ -46,7 +46,7 @@ const Main = ({navigation}) => {
       navigation.navigate('SearchingResults', {
         category: selectedCategory,
       });
-    }, 3000)
+    }, 1500)
   };
 
   if (isSearching) {

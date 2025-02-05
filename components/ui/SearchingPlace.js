@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 import CustomLoader from './CustomLoader';
 
 const SearchingPlace = ({category}) => {
-  console.log('searching place')
+  console.log('searching place', category);
   return (
     <View style={styles.container}>
       <CustomLoader />

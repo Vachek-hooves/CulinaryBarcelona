@@ -8,26 +8,32 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {PLACES} from '../../data/places';
+import SearchingPlace from '../../components/ui/SearchingPlace';
 
 const SearchingResults = ({route}) => {
   const {category} = route.params;
   const [randomPlace, setRandomPlace] = useState(null);
-  // console.log(category,'category')
+  const [isSearching, setIsSearching] = useState(false);
+  console.log(category, 'category');
 
-  console.log(randomPlace, 'randomPlace');
+  const getRandomPlace = () => {
+    setIsSearching(true);
+    // Simulate search delay
+    setTimeout(() => {
+      const placesInCategory = PLACES.filter(place => place.category === category.title);
+      const randomIndex = Math.floor(Math.random() * placesInCategory.length);
+      setRandomPlace(placesInCategory[randomIndex]);
+      setIsSearching(false);
+    }, 1500); 
+  };
 
   useEffect(() => {
-    // Filter places by category and get random one
-    const placesInCategory = PLACES.filter(
-      place => place.category === category.title,
-    );
-    const randomIndex = Math.floor(Math.random() * placesInCategory.length);
-    setRandomPlace(placesInCategory[randomIndex]);
-  }, []);
+    getRandomPlace();
+  }, [category]);
 
   const getTodayHours = () => {
     const today = new Date();
-  
+
     const daysMap = {
       0: 'sun',
       1: 'mon',
@@ -35,13 +41,17 @@ const SearchingResults = ({route}) => {
       3: 'wed',
       4: 'thu',
       5: 'fri',
-      6: 'sat'
+      6: 'sat',
     };
-    
+
     const currentDay = daysMap[today.getDay()];
-    
+
     return randomPlace.hours[currentDay];
   };
+
+  if (isSearching) {
+    return <SearchingPlace category={category.title} />;
+  }
 
   if (!randomPlace) return null;
 
@@ -49,7 +59,7 @@ const SearchingResults = ({route}) => {
     <View style={styles.container}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{flexGrow: 1,paddingTop: 40}}>
+        contentContainerStyle={{flexGrow: 1, paddingTop: 40}}>
         <Text style={styles.categoryTitle}>{category.title}</Text>
 
         <Image source={{uri: randomPlace.image}} style={styles.placeImage} />
@@ -101,9 +111,7 @@ const SearchingResults = ({route}) => {
 
         <TouchableOpacity
           style={styles.searchButton}
-          onPress={() => {
-            /* Handle new search */
-          }}>
+          onPress={getRandomPlace}>
           <Text style={styles.searchButtonText}>Search new</Text>
         </TouchableOpacity>
       </ScrollView>
