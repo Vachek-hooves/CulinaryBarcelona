@@ -5,14 +5,18 @@ import {PLACES} from '../../data/places';
 const SearchingResults = ({route}) => {
   const {category} = route.params;
   const [randomPlace, setRandomPlace] = useState(null);
-  console.log(category)
-  console.log(randomPlace);
+  // console.log(category,'category')
+
+ 
+  
+  console.log(randomPlace,'randomPlace')
+  
  
 
   useEffect(() => {
     // Filter places by category and get random one
     const placesInCategory = PLACES.filter(
-      place => place.category === category,
+      place => place.category === category.title,
     );
     const randomIndex = Math.floor(Math.random() * placesInCategory.length);
     setRandomPlace(placesInCategory[randomIndex]);
@@ -22,9 +26,9 @@ const SearchingResults = ({route}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.categoryTitle}>{category}</Text>
+      <Text style={styles.categoryTitle}>{category.title}</Text>
 
-      <Image source={randomPlace.image} style={styles.placeImage} />
+      <Image source={{uri: randomPlace.image}} style={styles.placeImage} />
 
       <View style={styles.infoContainer}>
         <Text style={styles.placeName}>{randomPlace.name}</Text>
@@ -97,7 +101,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   placeImage: {
-    width: '100%',
+    width: 200,
     height: 200,
     borderRadius: 12,
     marginBottom: 20,
