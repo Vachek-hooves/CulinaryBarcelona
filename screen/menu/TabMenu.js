@@ -1,6 +1,6 @@
 import {StyleSheet, Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Main,  Profile, Map, Favotites, Game} from '../tab';
+import {Main, Profile, Map, Favotites, Game} from '../tab';
 
 const Tab = createBottomTabNavigator();
 
@@ -99,13 +99,31 @@ const styles = StyleSheet.create({
   tabBar: {
     backgroundColor: '#000000',
     borderTopWidth: 0,
-    height: 60,
+    height: 70,
     paddingBottom: 5,
     paddingTop: 5,
+    position: 'absolute',
+    // left: 50,
+    // right: 30,
+    bottom: 30,
+    // borderRadius: 30,
+    elevation: 10, // for Android shadow
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    paddingTop: 10,
+    marginHorizontal: 20,
+    borderWidth: 2,
+    borderColor: '#DF393E',
+    borderTopWidth: 2,
   },
   tabIcon: {
-    width: 24,
-    height: 24,
+    width: 36,
+    height: 36,
     resizeMode: 'contain',
   },
 });
