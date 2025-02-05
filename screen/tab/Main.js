@@ -43,6 +43,8 @@ const Main = ({navigation}) => {
   // console.log(favorites);
 
   const handleSearch = () => {
+    if (!selectedCategory) return; // Early return if no category selected
+    
     setIsSearching(true);
     setTimeout(() => {
       setIsSearching(false);
@@ -53,7 +55,7 @@ const Main = ({navigation}) => {
   };
 
   if (isSearching) {
-    return <SearchingPlace />;
+    return <SearchingPlace category={selectedCategory?.title} />;
   }
 
   return (
@@ -95,9 +97,18 @@ const Main = ({navigation}) => {
                   Play 'Guess the Dish'
                 </Text>
                 <TouchableOpacity
-                  style={styles.playButton}
-                  onPress={handleSearch}>
-                  <Text style={styles.playButtonText}>Search</Text>
+                  style={[
+                    styles.playButton,
+                    !selectedCategory && styles.playButtonDisabled
+                  ]}
+                  onPress={handleSearch}
+                  disabled={!selectedCategory}>
+                  <Text style={[
+                    styles.playButtonText,
+                    !selectedCategory && styles.playButtonTextDisabled
+                  ]}>
+                    Search
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -186,9 +197,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
   },
+  playButtonDisabled: {
+    backgroundColor: '#666666',
+  },
   playButtonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  playButtonTextDisabled: {
+    color: '#999999',
   },
 });
