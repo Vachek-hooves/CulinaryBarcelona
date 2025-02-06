@@ -1,11 +1,10 @@
 import {StyleSheet, Text, View, Image, Pressable} from 'react-native';
 import React from 'react';
-import {quiz} from '../../data/quiz';
 import {useBarcelonaContext} from '../../store/context';
 
 const Game = ({navigation}) => {
   const {quizData} = useBarcelonaContext();
-  console.log(quizData);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Guess The Dish</Text>
@@ -29,12 +28,12 @@ const Game = ({navigation}) => {
         <Text style={styles.levelsTitle}>Levels:</Text>
 
         <View style={styles.levelsGrid}>
-          {quiz.map((level, index) => (
+          {quizData.map((level, index) => (
             <Pressable
+              key={index}
               onPress={() =>
                 navigation.navigate('QuizGame', {levelIndex: index})
               }
-              key={index}
               style={({pressed}) => [
                 styles.levelButton,
                 !level.isLocked && styles.unlockedLevel,
