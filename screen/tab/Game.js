@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, Image, Pressable} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Pressable,
+  ScrollView,
+} from 'react-native';
 import React from 'react';
 import {useBarcelonaContext} from '../../store/context';
 
@@ -7,51 +14,53 @@ const Game = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Guess The Dish</Text>
+      <ScrollView>
+        <Text style={styles.title}>Guess The Dish</Text>
 
-      <View style={styles.contentContainer}>
-        <View style={styles.iconContainer}>
-          <Image
-            source={require('../../assets/icons/question.png')}
-            style={styles.questionIcon}
-          />
+        <View style={styles.contentContainer}>
+          <View style={styles.iconContainer}>
+            <Image
+              source={require('../../assets/icons/question.png')}
+              style={styles.questionIcon}
+            />
+          </View>
+
+          <Text style={styles.gameName}>Guess The Dish</Text>
+
+          <Text style={styles.description}>
+            In this game you have to guess which local dish of Barcelona is
+            shown in the photo.{'\n'}
+            The time limit is 10 seconds.
+          </Text>
+
+          <Text style={styles.levelsTitle}>Levels:</Text>
+
+          <View style={styles.levelsGrid}>
+            {quizData.map((level, index) => (
+              <Pressable
+                key={index}
+                onPress={() =>
+                  navigation.navigate('QuizGame', {levelIndex: index})
+                }
+                style={({pressed}) => [
+                  styles.levelButton,
+                  !level.isLocked && styles.unlockedLevel,
+                  pressed && !level.isLocked && styles.pressedLevel,
+                ]}
+                disabled={level.isLocked}>
+                <Text style={styles.levelNumber}>{index + 1}</Text>
+                <Text
+                  style={[
+                    styles.levelText,
+                    !level.isLocked && styles.unlockedLevelText,
+                  ]}>
+                  level
+                </Text>
+              </Pressable>
+            ))}
+          </View>
         </View>
-
-        <Text style={styles.gameName}>Guess The Dish</Text>
-
-        <Text style={styles.description}>
-          In this game you have to guess which local dish of Barcelona is shown
-          in the photo.{'\n'}
-          The time limit is 10 seconds.
-        </Text>
-
-        <Text style={styles.levelsTitle}>Levels:</Text>
-
-        <View style={styles.levelsGrid}>
-          {quizData.map((level, index) => (
-            <Pressable
-              key={index}
-              onPress={() =>
-                navigation.navigate('QuizGame', {levelIndex: index})
-              }
-              style={({pressed}) => [
-                styles.levelButton,
-                !level.isLocked && styles.unlockedLevel,
-                pressed && !level.isLocked && styles.pressedLevel,
-              ]}
-              disabled={level.isLocked}>
-              <Text style={styles.levelNumber}>{index + 1}</Text>
-              <Text
-                style={[
-                  styles.levelText,
-                  !level.isLocked && styles.unlockedLevelText,
-                ]}>
-                level
-              </Text>
-            </Pressable>
-          ))}
-        </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
