@@ -28,8 +28,10 @@ const Game = ({navigation}) => {
           <Text style={styles.gameName}>Guess The Dish</Text>
 
           <Text style={styles.description}>
-            In this game you have to guess which local dish of Barcelona is
-            shown in the photo.{'\n'}
+            Welcome to the ultimate Barcelona food challenge! 🍽️{'\n\n'}
+            Test your knowledge of Catalan cuisine and become a true Barcelona foodie.{'\n\n'}
+            {/* In this game you have to guess which local dish of Barcelona is
+            shown in the photo.{'\n'} */}
             The time limit is 10 seconds.
           </Text>
 

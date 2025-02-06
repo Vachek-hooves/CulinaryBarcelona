@@ -17,9 +17,9 @@ const CHALLENGE_ICONS = {
 };
 
 const REWARD_COLORS = {
-  explorer: '#6366F1',    // Purple/Blue for map
-  cuisineKnower: '#4CAF50', // Green for utensils
-  cuisineExpert: '#F59E0B'  // Orange/Yellow for star
+  explorer: '#7173FF', // Purple/Blue for map
+  cuisineKnower: '#39DF6B', // Green for utensils
+  cuisineExpert: '#FFAF2E', // Orange/Yellow for star
 };
 
 const Profile = () => {
@@ -36,23 +36,26 @@ const Profile = () => {
     }
   };
 
-  const getRewardStyle = (challengeKey) => {
+  const getRewardStyle = challengeKey => {
     const challenge = challenges[challengeKey];
     return {
       backgroundColor: challenge.progress === 100 ? 'transparent' : '#1A1A1A',
       borderWidth: 4,
-      borderColor: challenge.progress === 100 ? REWARD_COLORS[challengeKey] : 'transparent',
+      borderColor:
+        challenge.progress === 100
+          ? REWARD_COLORS[challengeKey]
+          : 'transparent',
       opacity: challenge.progress === 100 ? 1 : 0.5,
     };
   };
 
-  const getIconTintColor = (challengeKey) => {
+  const getIconTintColor = challengeKey => {
     const challenge = challenges[challengeKey];
     return challenge.progress === 100 ? REWARD_COLORS[challengeKey] : '#999999';
   };
 
-  const getChallengeIconStyle = (progress) => ({
-    tintColor: progress === 100 ? '#DF393E' : '#999999'
+  const getChallengeIconStyle = progress => ({
+    tintColor: progress === 100 ? '#DF393E' : '#999999',
   });
 
   return (
@@ -63,21 +66,27 @@ const Profile = () => {
         <Text style={styles.sectionTitle}>Your rewards:</Text>
         <View style={styles.rewardsContainer}>
           <View style={[styles.rewardIcon, getRewardStyle('explorer')]}>
-            <Image 
-              source={CHALLENGE_ICONS.map} 
-              style={[styles.icon, { tintColor: getIconTintColor('explorer') }]} 
+            <Image
+              source={CHALLENGE_ICONS.map}
+              style={[styles.icon, {tintColor: getIconTintColor('explorer')}]}
             />
           </View>
           <View style={[styles.rewardIcon, getRewardStyle('cuisineKnower')]}>
-            <Image 
-              source={CHALLENGE_ICONS.utensils} 
-              style={[styles.icon, { tintColor: getIconTintColor('cuisineKnower') }]} 
+            <Image
+              source={CHALLENGE_ICONS.utensils}
+              style={[
+                styles.icon,
+                {tintColor: getIconTintColor('cuisineKnower')},
+              ]}
             />
           </View>
           <View style={[styles.rewardIcon, getRewardStyle('cuisineExpert')]}>
-            <Image 
-              source={CHALLENGE_ICONS.star} 
-              style={[styles.icon, { tintColor: getIconTintColor('cuisineExpert') }]} 
+            <Image
+              source={CHALLENGE_ICONS.star}
+              style={[
+                styles.icon,
+                {tintColor: getIconTintColor('cuisineExpert')},
+              ]}
             />
           </View>
         </View>
@@ -87,23 +96,28 @@ const Profile = () => {
           {Object.values(challenges).map((challenge, index) => (
             <View key={index} style={styles.challengeItem}>
               <View style={styles.challengeHeader}>
-                <Image 
-                  source={CHALLENGE_ICONS[challenge.icon]} 
-                  style={[styles.challengeIcon, getChallengeIconStyle(challenge.progress)]} 
+                <Image
+                  source={CHALLENGE_ICONS[challenge.icon]}
+                  style={[
+                    styles.challengeIcon,
+                    getChallengeIconStyle(challenge.progress),
+                  ]}
                 />
                 <View>
                   <Text style={styles.challengeTitle}>{challenge.title}</Text>
-                  <Text style={styles.challengeDescription}>{challenge.description}</Text>
+                  <Text style={styles.challengeDescription}>
+                    {challenge.description}
+                  </Text>
                 </View>
               </View>
               <View style={styles.progressContainer}>
                 <View style={styles.progressBar}>
-                  <View 
+                  <View
                     style={[
-                      styles.progressFill, 
-                      { width: `${challenge.progress}%` },
-                      challenge.progress === 100 && styles.progressComplete
-                    ]} 
+                      styles.progressFill,
+                      {width: `${challenge.progress}%`},
+                      challenge.progress === 100 && styles.progressComplete,
+                    ]}
                   />
                 </View>
                 <Text style={styles.progressText}>{challenge.progress}%</Text>
@@ -163,11 +177,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#1A1A1A',
     borderRadius: 12,
     padding: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   challengeHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
   },
   challengeIcon: {
     width: 24,
@@ -185,9 +201,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   progressContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+    width: 94,
+    height: 34,
+    backgroundColor: '#333333',
+    borderRadius: 4,
+    overflow: 'hidden',
+    justifyContent: 'center',
   },
   progressBar: {
     flex: 1,
@@ -198,16 +217,20 @@ const styles = StyleSheet.create({
   progressFill: {
     height: '100%',
     backgroundColor: '#DF393E',
-    borderRadius: 2,
+    position: 'absolute',
+    left: 0,
   },
   progressComplete: {
     backgroundColor: '#DF393E',
   },
   progressText: {
-    color: '#999999',
+    color: 'white',
     fontSize: 14,
-    minWidth: 45,
-    textAlign: 'right',
+    fontWeight: '600',
+    textAlign: 'center',
+    zIndex: 1,
+    position: 'absolute',
+    alignSelf: 'center',
   },
   shareButton: {
     backgroundColor: '#FF4B55',
@@ -216,7 +239,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 'auto',
     marginBottom: 20,
-    marginTop:20
+    marginTop: 20,
   },
   shareButtonText: {
     color: 'white',
