@@ -6,12 +6,13 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from 'react-native';
 import {useBarcelonaContext} from '../../store/context';
 import GameOverModal from '../../components/ui/GameOverModal';
 
 const QuizGame = ({route, navigation}) => {
-  const {quizData} = useBarcelonaContext();
+  const {quizData, unlockNextLevel} = useBarcelonaContext();
   const {levelIndex} = route.params;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(10);
@@ -69,9 +70,16 @@ const QuizGame = ({route, navigation}) => {
         setIsAnswerCorrect(null);
       } else {
         // Level completed
+        const allQuestionsAnswered = score + (isCorrect ? 1 : 0) === currentLevel.questions.length;
+        
+        if (allQuestionsAnswered) {
+          // Unlock next level if all questions were answered correctly
+          unlockNextLevel(levelIndex);
+        }
+        
         Alert.alert(
-          'Level Complete!',
-          `Your final score: ${score + (isCorrect ? 1 : 0)}`,
+          allQuestionsAnswered ? "Congratulations!" : "Level Complete",
+          `Your final score: ${score + (isCorrect ? 1 : 0)}${allQuestionsAnswered ? "\nNext level unlocked!" : ""}`,
           [
             {
               text: 'OK',
@@ -80,7 +88,7 @@ const QuizGame = ({route, navigation}) => {
           ],
         );
       }
-    }, 1000); // Show feedback for 1 second
+    }, 1000);
   };
 
   const getOptionStyle = option => {

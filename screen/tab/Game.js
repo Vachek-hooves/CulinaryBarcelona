@@ -1,24 +1,28 @@
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
-import React from 'react'
-import { quiz } from '../../data/quiz'
+import {StyleSheet, Text, View, Image, Pressable} from 'react-native';
+import React from 'react';
+import {quiz} from '../../data/quiz';
+import {useBarcelonaContext} from '../../store/context';
 
-const Game = ({ navigation }) => {
+const Game = ({navigation}) => {
+  const {quizData} = useBarcelonaContext();
+  console.log(quizData);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Guess The Dish</Text>
 
       <View style={styles.contentContainer}>
         <View style={styles.iconContainer}>
-          <Image 
+          <Image
             source={require('../../assets/icons/question.png')}
             style={styles.questionIcon}
           />
         </View>
 
         <Text style={styles.gameName}>Guess The Dish</Text>
-        
+
         <Text style={styles.description}>
-          In this game you have to guess which local dish of Barcelona is shown in the photo.{'\n'}
+          In this game you have to guess which local dish of Barcelona is shown
+          in the photo.{'\n'}
           The time limit is 10 seconds.
         </Text>
 
@@ -27,20 +31,22 @@ const Game = ({ navigation }) => {
         <View style={styles.levelsGrid}>
           {quiz.map((level, index) => (
             <Pressable
-              onPress={() => navigation.navigate('QuizGame', { levelIndex: index })}
+              onPress={() =>
+                navigation.navigate('QuizGame', {levelIndex: index})
+              }
               key={index}
-              style={({ pressed }) => [
+              style={({pressed}) => [
                 styles.levelButton,
                 !level.isLocked && styles.unlockedLevel,
-                pressed && !level.isLocked && styles.pressedLevel
+                pressed && !level.isLocked && styles.pressedLevel,
               ]}
-              disabled={level.isLocked}
-            >
+              disabled={level.isLocked}>
               <Text style={styles.levelNumber}>{index + 1}</Text>
-              <Text style={[
-                styles.levelText,
-                !level.isLocked && styles.unlockedLevelText
-              ]}>
+              <Text
+                style={[
+                  styles.levelText,
+                  !level.isLocked && styles.unlockedLevelText,
+                ]}>
                 level
               </Text>
             </Pressable>
@@ -48,8 +54,8 @@ const Game = ({ navigation }) => {
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -139,7 +145,7 @@ const styles = StyleSheet.create({
   },
   unlockedLevelText: {
     color: 'white',
-  }
-})
+  },
+});
 
-export default Game
+export default Game;

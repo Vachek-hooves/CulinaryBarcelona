@@ -10,7 +10,7 @@ export const ContextProvider = ({children}) => {
   const [unlockedCategories, setUnlockedCategories] = useState([
     'Guess the Dish',
   ]); // First category unlocked by default
-  console.log(quizData);
+
   // Load data from AsyncStorage on app start
   useEffect(() => {
     loadFavorites();
@@ -128,6 +128,22 @@ export const ContextProvider = ({children}) => {
     return unlockedCategories.includes(categoryName);
   };
 
+  // New function to unlock next level
+  const unlockNextLevel = async (currentLevelIndex) => {
+    try {
+      if (currentLevelIndex < quizData.length - 1) {
+        const updatedQuizData = [...quizData];
+        updatedQuizData[currentLevelIndex + 1].isLocked = false;
+        
+        // Save to AsyncStorage and update state
+        await AsyncStorage.setItem('quizData', JSON.stringify(updatedQuizData));
+        setQuizData(updatedQuizData);
+      }
+    } catch (error) {
+      console.error('Error unlocking next level:', error);
+    }
+  };
+
   const value = {
     favorites,
     toggleFavorite,
@@ -137,6 +153,7 @@ export const ContextProvider = ({children}) => {
     unlockedCategories,
     unlockCategory,
     isCategoryUnlocked,
+    unlockNextLevel,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
