@@ -52,35 +52,35 @@ export const quiz = [
       {
         id: 't1',
         question: 'Which famous Spanish tapas dish is shown in this image?',
-        image: require('../assets/quiz/croquetas.png'),
+        image: require('../assets/quiz/croquetas.jpg'),
         options: ['Croquetas', 'Albóndigas', 'Calamares', 'Empanadas'],
         correctAnswer: 'Croquetas',
       },
       {
         id: 't2',
         question: 'Name this classic Spanish potato omelette:',
-        image: require('../assets/quiz/tortilla.png'),
+        image: require('../assets/quiz/tortilla.jpg'),
         options: ['Tortilla Española', 'Huevos Rotos', 'Revuelto', 'Pisto'],
         correctAnswer: 'Tortilla Española',
       },
       {
         id: 't3',
         question: 'What are these grilled peppers called?',
-        image: require('../assets/quiz/pimientos.png'),
+        image: require('../assets/quiz/pimientos.jpg'),
         options: ['Pimientos de Padrón', 'Jalapeños', 'Piquillo', 'Guindillas'],
         correctAnswer: 'Pimientos de Padrón',
       },
       {
         id: 't4',
         question: 'Identify these stuffed olives:',
-        image: require('../assets/quiz/aceitunas.png'),
+        image: require('../assets/quiz/aceitunas.jpg'),
         options: ['Aceitunas Rellenas', 'Manzanilla', 'Kalamata', 'Gordal'],
         correctAnswer: 'Aceitunas Rellenas',
       },
       {
         id: 't5',
         question: 'What is this popular garlic shrimp tapas dish?',
-        image: require('../assets/quiz/gambas.png'),
+        image: require('../assets/quiz/gambas.jpg'),
         options: [
           'Gambas al Ajillo',
           'Camarones Fritos',
@@ -98,7 +98,7 @@ export const quiz = [
       {
         id: 'd1',
         question: 'What is this traditional Catalan cream dessert?',
-        image: require('../assets/quiz/crema.png'),
+        image: require('../assets/quiz/crema.jpeg'),
         options: [
           'Crema Catalana',
           'Flan',
@@ -110,7 +110,7 @@ export const quiz = [
       {
         id: 'd2',
         question: 'Name this almond-based Christmas sweet:',
-        image: require('../assets/quiz/turron.png'),
+        image: require('../assets/quiz/turron.webp'),
         options: [
           'Turrón',
           'Polvorón',
@@ -122,7 +122,7 @@ export const quiz = [
       {
         id: 'd3',
         question: 'Identify this spiral-shaped Mallorcan pastry:',
-        image: require('../assets/quiz/ensaimada.png'),
+        image: require('../assets/quiz/ensaimada.jpg'),
         options: [
           'Ensaimada',
           'Palmera',
@@ -134,7 +134,7 @@ export const quiz = [
       {
         id: 'd4',
         question: 'What are these traditional almond cookies called?',
-        image: require('../assets/quiz/carquinyolis.png'),
+        image: require('../assets/quiz/carquinyolis.jpeg'),
         options: [
           'Carquinyolis',
           'Galletas',
@@ -146,7 +146,7 @@ export const quiz = [
       {
         id: 'd5',
         question: 'Name this rich chocolate-dipped pastry:',
-        image: require('../assets/quiz/xuixo.png'),
+        image: require('../assets/quiz/xuixo.jpeg'),
         options: [
           'Xuixo',
           'Napolitana',
@@ -165,7 +165,7 @@ export const quiz = [
       {
         id: 's1',
         question: 'What is this famous Spanish octopus dish?',
-        image: require('../assets/quiz/pulpo.png'),
+        image: require('../assets/quiz/pulpo.jpg'),
         options: [
           'Pulpo a la Gallega',
           'Calamares Fritos',
@@ -177,7 +177,7 @@ export const quiz = [
       {
         id: 's2',
         question: 'Name these grilled sardines:',
-        image: require('../assets/quiz/sardinas.png'),
+        image: require('../assets/quiz/sardinas.jpg'),
         options: [
           'Sardinas a la Plancha',
           'Boquerones',
@@ -189,7 +189,7 @@ export const quiz = [
       {
         id: 's3',
         question: 'Identify this seafood rice dish:',
-        image: require('../assets/quiz/arroznegro.png'),
+        image: require('../assets/quiz/arroznegro.jpg'),
         options: [
           'Arroz Negro',
           'Paella Marinera',
@@ -201,7 +201,7 @@ export const quiz = [
       {
         id: 's4',
         question: 'What are these marinated anchovies called?',
-        image: require('../assets/quiz/boquerones.png'),
+        image: require('../assets/quiz/boquerones.webp'),
         options: [
           'Boquerones en Vinagre',
           'Anchoas',
@@ -213,7 +213,7 @@ export const quiz = [
       {
         id: 's5',
         question: 'Name this traditional Catalan seafood stew:',
-        image: require('../assets/quiz/suquet.png'),
+        image: require('../assets/quiz/suquet.webp'),
         options: [
           'Suquet de Peix',
           'Zarzuela',
@@ -232,7 +232,7 @@ export const quiz = [
       {
         id: 'w1',
         question: 'What type of Spanish wine is shown in this image?',
-        image: require('../assets/quiz/rioja.png'),
+        image: require('../assets/quiz/rioja.webp'),
         options: [
           'Rioja',
           'Ribera del Duero',
@@ -244,7 +244,7 @@ export const quiz = [
       {
         id: 'w2',
         question: 'Identify this traditional Spanish aperitif:',
-        image: require('../assets/quiz/vermouth.png'),
+        image: require('../assets/quiz/vermouth.jpg'),
         options: [
           'Vermut',
           'Sangría',
@@ -256,7 +256,7 @@ export const quiz = [
       {
         id: 'w3',
         question: 'What Spanish sparkling wine is this?',
-        image: require('../assets/quiz/cava.png'),
+        image: require('../assets/quiz/cava.webp'),
         options: [
           'Cava',
           'Champagne',
@@ -267,8 +267,8 @@ export const quiz = [
       },
       {
         id: 'w4',
-        question: 'Name this wine region's signature red wine:',
-        image: require('../assets/quiz/priorat.png'),
+        question: "Name this wine region's signature red wine",
+        image: require('../assets/quiz/priorat.jpg'),
         options: [
           'Priorat',
           'Albariño',
@@ -280,7 +280,7 @@ export const quiz = [
       {
         id: 'w5',
         question: 'Which Spanish white wine variety is this?',
-        image: require('../assets/quiz/albarino.png'),
+        image: require('../assets/quiz/albarino.jpg'),
         options: [
           'Albariño',
           'Verdejo',
