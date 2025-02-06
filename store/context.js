@@ -1,6 +1,7 @@
 import {createContext, useState, useEffect, useContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {quiz} from '../data/quiz';
+import { PLACES } from '../data/places';
 
 export const Context = createContext();
 
@@ -10,38 +11,35 @@ export const ContextProvider = ({children}) => {
   const [unlockedCategories, setUnlockedCategories] = useState([
     'Guess the Dish',
   ]); // First category unlocked by default
+  const [visitedPlaces, setVisitedPlaces] = useState([]);
+  const [correctGuesses, setCorrectGuesses] = useState(0);
 
   // Load data from AsyncStorage on app start
   useEffect(() => {
-    loadFavorites();
-    loadQuizData();
+    loadInitialData();
     loadUnlockedCategories();
   }, []);
 
-  // Load favorites from AsyncStorage
-  const loadFavorites = async () => {
+  const loadInitialData = async () => {
     try {
-      const storedFavorites = await AsyncStorage.getItem('favorites');
-      if (storedFavorites) {
-        setFavorites(JSON.parse(storedFavorites));
-      }
-    } catch (error) {
-      console.error('Error loading favorites:', error);
-    }
-  };
+      const [
+        storedFavorites,
+        storedQuizData,
+        storedVisitedPlaces,
+        storedCorrectGuesses
+      ] = await Promise.all([
+        AsyncStorage.getItem('favorites'),
+        AsyncStorage.getItem('quizData'),
+        AsyncStorage.getItem('visitedPlaces'),
+        AsyncStorage.getItem('correctGuesses')
+      ]);
 
-  // Load quiz data from AsyncStorage
-  const loadQuizData = async () => {
-    try {
-      const storedQuizData = await AsyncStorage.getItem('quizData');
-      if (storedQuizData) {
-        setQuizData(JSON.parse(storedQuizData));
-      } else {
-        // Initialize quiz data if not exists
-        await AsyncStorage.setItem('quizData', JSON.stringify(quiz));
-      }
+      if (storedFavorites) setFavorites(JSON.parse(storedFavorites));
+      if (storedQuizData) setQuizData(JSON.parse(storedQuizData));
+      if (storedVisitedPlaces) setVisitedPlaces(JSON.parse(storedVisitedPlaces));
+      if (storedCorrectGuesses) setCorrectGuesses(JSON.parse(storedCorrectGuesses));
     } catch (error) {
-      console.error('Error loading quiz data:', error);
+      console.error('Error loading data:', error);
     }
   };
 
@@ -144,6 +142,52 @@ export const ContextProvider = ({children}) => {
     }
   };
 
+  // Add place to visited
+  const addVisitedPlace = async (placeId) => {
+    try {
+      const newVisitedPlaces = [...new Set([...visitedPlaces, placeId])];
+      await AsyncStorage.setItem('visitedPlaces', JSON.stringify(newVisitedPlaces));
+      setVisitedPlaces(newVisitedPlaces);
+    } catch (error) {
+      console.error('Error adding visited place:', error);
+    }
+  };
+
+  // Add correct guess
+  const addCorrectGuess = async () => {
+    try {
+      const newCount = correctGuesses + 1;
+      await AsyncStorage.setItem('correctGuesses', JSON.stringify(newCount));
+      setCorrectGuesses(newCount);
+    } catch (error) {
+      console.error('Error updating correct guesses:', error);
+    }
+  };
+
+  // Calculate challenges progress
+  const getChallengesProgress = () => {
+    return {
+      explorer: {
+        title: 'Explorer',
+        description: 'Discover 10 spots',
+        progress: Math.min((visitedPlaces.length / 10) * 100, 100),
+        icon: 'map'
+      },
+      cuisineKnower: {
+        title: 'Cuisine Knower',
+        description: 'Guess 1 dish',
+        progress: Math.min((correctGuesses / 1) * 100, 100),
+        icon: 'utensils'
+      },
+      cuisineExpert: {
+        title: 'Cuisine Expert',
+        description: 'Guess 5 dishes',
+        progress: Math.min((correctGuesses / 5) * 100, 100),
+        icon: 'star'
+      }
+    };
+  };
+
   const value = {
     favorites,
     toggleFavorite,
@@ -154,6 +198,11 @@ export const ContextProvider = ({children}) => {
     unlockCategory,
     isCategoryUnlocked,
     unlockNextLevel,
+    visitedPlaces,
+    addVisitedPlace,
+    correctGuesses,
+    addCorrectGuess,
+    getChallengesProgress
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
