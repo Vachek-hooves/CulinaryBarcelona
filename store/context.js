@@ -1,7 +1,6 @@
 import {createContext, useState, useEffect, useContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {quiz} from '../data/quiz';
-import { PLACES } from '../data/places';
 
 export const Context = createContext();
 
@@ -11,35 +10,41 @@ export const ContextProvider = ({children}) => {
   const [unlockedCategories, setUnlockedCategories] = useState([
     'Guess the Dish',
   ]); // First category unlocked by default
-  const [visitedPlaces, setVisitedPlaces] = useState([]);
   const [correctGuesses, setCorrectGuesses] = useState(0);
+  const [visitedPlaces, setVisitedPlaces] = useState([]);
 
   // Load data from AsyncStorage on app start
   useEffect(() => {
-    loadInitialData();
+    loadFavorites();
+    loadQuizData();
     loadUnlockedCategories();
+    loadCorrectGuesses();
   }, []);
 
-  const loadInitialData = async () => {
+  // Load favorites from AsyncStorage
+  const loadFavorites = async () => {
     try {
-      const [
-        storedFavorites,
-        storedQuizData,
-        storedVisitedPlaces,
-        storedCorrectGuesses
-      ] = await Promise.all([
-        AsyncStorage.getItem('favorites'),
-        AsyncStorage.getItem('quizData'),
-        AsyncStorage.getItem('visitedPlaces'),
-        AsyncStorage.getItem('correctGuesses')
-      ]);
-
-      if (storedFavorites) setFavorites(JSON.parse(storedFavorites));
-      if (storedQuizData) setQuizData(JSON.parse(storedQuizData));
-      if (storedVisitedPlaces) setVisitedPlaces(JSON.parse(storedVisitedPlaces));
-      if (storedCorrectGuesses) setCorrectGuesses(JSON.parse(storedCorrectGuesses));
+      const storedFavorites = await AsyncStorage.getItem('favorites');
+      if (storedFavorites) {
+        setFavorites(JSON.parse(storedFavorites));
+      }
     } catch (error) {
-      console.error('Error loading data:', error);
+      console.error('Error loading favorites:', error);
+    }
+  };
+
+  // Load quiz data from AsyncStorage
+  const loadQuizData = async () => {
+    try {
+      const storedQuizData = await AsyncStorage.getItem('quizData');
+      if (storedQuizData) {
+        setQuizData(JSON.parse(storedQuizData));
+      } else {
+        // Initialize quiz data if not exists
+        await AsyncStorage.setItem('quizData', JSON.stringify(quiz));
+      }
+    } catch (error) {
+      console.error('Error loading quiz data:', error);
     }
   };
 
@@ -58,6 +63,18 @@ export const ContextProvider = ({children}) => {
       }
     } catch (error) {
       console.error('Error loading unlocked categories:', error);
+    }
+  };
+
+  // Load correct guesses from AsyncStorage
+  const loadCorrectGuesses = async () => {
+    try {
+      const storedCorrectGuesses = await AsyncStorage.getItem('correctGuesses');
+      if (storedCorrectGuesses) {
+        setCorrectGuesses(JSON.parse(storedCorrectGuesses));
+      }
+    } catch (error) {
+      console.error('Error loading correct guesses:', error);
     }
   };
 
@@ -91,6 +108,16 @@ export const ContextProvider = ({children}) => {
       setUnlockedCategories(newCategories);
     } catch (error) {
       console.error('Error saving unlocked categories:', error);
+    }
+  };
+
+  // Save correct guesses to AsyncStorage
+  const saveCorrectGuesses = async newCorrectGuesses => {
+    try {
+      await AsyncStorage.setItem('correctGuesses', JSON.stringify(newCorrectGuesses));
+      setCorrectGuesses(newCorrectGuesses);
+    } catch (error) {
+      console.error('Error saving correct guesses:', error);
     }
   };
 
@@ -142,17 +169,6 @@ export const ContextProvider = ({children}) => {
     }
   };
 
-  // Add place to visited
-  const addVisitedPlace = async (placeId) => {
-    try {
-      const newVisitedPlaces = [...new Set([...visitedPlaces, placeId])];
-      await AsyncStorage.setItem('visitedPlaces', JSON.stringify(newVisitedPlaces));
-      setVisitedPlaces(newVisitedPlaces);
-    } catch (error) {
-      console.error('Error adding visited place:', error);
-    }
-  };
-
   // Add correct guess
   const addCorrectGuess = async () => {
     try {
@@ -170,19 +186,19 @@ export const ContextProvider = ({children}) => {
       explorer: {
         title: 'Explorer',
         description: 'Discover 10 spots',
-        progress: Math.min((visitedPlaces.length / 10) * 100, 100),
+        progress: Math.min(Math.round((visitedPlaces.length / 10) * 100), 100),
         icon: 'map'
       },
       cuisineKnower: {
         title: 'Cuisine Knower',
         description: 'Guess 1 dish',
-        progress: Math.min((correctGuesses / 1) * 100, 100),
+        progress: correctGuesses >= 1 ? 100 : Math.min(Math.round(correctGuesses * 100), 100),
         icon: 'utensils'
       },
       cuisineExpert: {
         title: 'Cuisine Expert',
         description: 'Guess 5 dishes',
-        progress: Math.min((correctGuesses / 5) * 100, 100),
+        progress: Math.min(Math.round((correctGuesses / 5) * 100), 100),
         icon: 'star'
       }
     };
@@ -198,11 +214,11 @@ export const ContextProvider = ({children}) => {
     unlockCategory,
     isCategoryUnlocked,
     unlockNextLevel,
-    visitedPlaces,
-    addVisitedPlace,
     correctGuesses,
     addCorrectGuess,
-    getChallengesProgress
+    getChallengesProgress,
+    visitedPlaces,
+    setVisitedPlaces,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

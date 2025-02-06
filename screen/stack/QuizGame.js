@@ -12,7 +12,7 @@ import {useBarcelonaContext} from '../../store/context';
 import GameOverModal from '../../components/ui/GameOverModal';
 
 const QuizGame = ({route, navigation}) => {
-  const {quizData, unlockNextLevel} = useBarcelonaContext();
+  const {quizData, unlockNextLevel, addCorrectGuess} = useBarcelonaContext();
   const {levelIndex} = route.params;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(10);
@@ -52,13 +52,14 @@ const QuizGame = ({route, navigation}) => {
     return `00:${time < 10 ? '0' : ''}${time}`;
   };
 
-  const handleAnswerPress = answer => {
+  const handleAnswerPress = async (answer) => {
     setSelectedAnswer(answer);
     const isCorrect = answer === currentQuestion.correctAnswer;
     setIsAnswerCorrect(isCorrect);
 
     if (isCorrect) {
       setScore(prevScore => prevScore + 1);
+      await addCorrectGuess();
     }
 
     // Wait for visual feedback before moving to next question
@@ -73,7 +74,6 @@ const QuizGame = ({route, navigation}) => {
         const allQuestionsAnswered = score + (isCorrect ? 1 : 0) === currentLevel.questions.length;
         
         if (allQuestionsAnswered) {
-          // Unlock next level if all questions were answered correctly
           unlockNextLevel(levelIndex);
         }
         
