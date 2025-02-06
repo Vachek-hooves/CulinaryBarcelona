@@ -19,7 +19,7 @@ const CHALLENGE_ICONS = {
 const Profile = () => {
   const {getChallengesProgress} = useBarcelonaContext();
   const challenges = getChallengesProgress();
-
+  console.log(challenges);
   const handleShare = async () => {
     try {
       await Share.share({
