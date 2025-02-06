@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import { useBarcelonaContext } from '../../store/context';
 
 const QuizGame = ({ route, navigation }) => {
@@ -7,6 +7,9 @@ const QuizGame = ({ route, navigation }) => {
   const { levelIndex } = route.params;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(10);
+  const [score, setScore] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
   
   const currentLevel = quizData[levelIndex];
   const currentQuestion = currentLevel.questions[currentQuestionIndex];
@@ -16,7 +19,7 @@ const QuizGame = ({ route, navigation }) => {
       setTimeLeft((prevTime) => {
         if (prevTime <= 1) {
           clearInterval(timer);
-          // Handle time up logic here
+          handleGameOver();
           return 0;
         }
         return prevTime - 1;
@@ -26,12 +29,62 @@ const QuizGame = ({ route, navigation }) => {
     return () => clearInterval(timer);
   }, [currentQuestionIndex]);
 
+  const handleGameOver = () => {
+    Alert.alert(
+      "Time's Up!",
+      `Game Over! Your score: ${score}`,
+      [
+        {
+          text: "OK",
+          onPress: () => navigation.navigate('Game')
+        }
+      ]
+    );
+  };
+
   const formatTime = (time) => {
     return `00:${time < 10 ? '0' : ''}${time}`;
   };
 
   const handleAnswerPress = (answer) => {
-    // Handle answer selection logic here
+    setSelectedAnswer(answer);
+    const isCorrect = answer === currentQuestion.correctAnswer;
+    setIsAnswerCorrect(isCorrect);
+
+    if (isCorrect) {
+      setScore(prevScore => prevScore + 1);
+    }
+
+    // Wait for visual feedback before moving to next question
+    setTimeout(() => {
+      if (currentQuestionIndex < currentLevel.questions.length - 1) {
+        setCurrentQuestionIndex(prev => prev + 1);
+        setTimeLeft(10);
+        setSelectedAnswer(null);
+        setIsAnswerCorrect(null);
+      } else {
+        // Level completed
+        Alert.alert(
+          "Level Complete!",
+          `Your final score: ${score + (isCorrect ? 1 : 0)}`,
+          [
+            {
+              text: "OK",
+              onPress: () => navigation.navigate('TabMenu',{screen:'Game'})
+            }
+          ]
+        );
+      }
+    }, 1000); // Show feedback for 1 second
+  };
+
+  const getOptionStyle = (option) => {
+    if (selectedAnswer === option) {
+      return {
+        backgroundColor: isAnswerCorrect ? '#4CAF50' : '#FF4B55'
+      };
+    }
+    return {};
   };
 
   return (
@@ -42,6 +95,9 @@ const QuizGame = ({ route, navigation }) => {
       <View style={styles.timerContainer}>
         <Text style={styles.timerText}>{formatTime(timeLeft)}</Text>
       </View>
+
+      {/* Score */}
+      <Text style={styles.score}>Score: {score}</Text>
 
       {/* Question Image */}
       <Image
@@ -55,8 +111,12 @@ const QuizGame = ({ route, navigation }) => {
         {currentQuestion.options.map((option, index) => (
           <TouchableOpacity
             key={index}
-            style={styles.optionButton}
+            style={[
+              styles.optionButton,
+              getOptionStyle(option)
+            ]}
             onPress={() => handleAnswerPress(option)}
+            disabled={selectedAnswer !== null}
           >
             <Text style={styles.optionText}>{option}</Text>
           </TouchableOpacity>
@@ -86,16 +146,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 8,
     alignSelf: 'center',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   timerText: {
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
   },
+  score: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
   questionImage: {
     width: '100%',
-    height: Dimensions.get('window').width * 0.8, // Maintain aspect ratio
+    height: Dimensions.get('window').width * 0.8,
     borderRadius: 12,
     marginBottom: 20,
   },
