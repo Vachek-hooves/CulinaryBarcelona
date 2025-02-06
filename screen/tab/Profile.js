@@ -16,6 +16,12 @@ const CHALLENGE_ICONS = {
   star: require('../../assets/icons/star.png'),
 };
 
+const REWARD_COLORS = {
+  explorer: '#6366F1',    // Purple/Blue for map
+  cuisineKnower: '#4CAF50', // Green for utensils
+  cuisineExpert: '#F59E0B'  // Orange/Yellow for star
+};
+
 const Profile = () => {
   const {getChallengesProgress} = useBarcelonaContext();
   const challenges = getChallengesProgress();
@@ -30,6 +36,21 @@ const Profile = () => {
     }
   };
 
+  const getRewardStyle = (challengeKey) => {
+    const challenge = challenges[challengeKey];
+    return {
+      backgroundColor: challenge.progress === 100 ? 'transparent' : '#1A1A1A',
+      borderWidth: 4,
+      borderColor: challenge.progress === 100 ? REWARD_COLORS[challengeKey] : 'transparent',
+      opacity: challenge.progress === 100 ? 1 : 0.5,
+    };
+  };
+
+  const getIconTintColor = (challengeKey) => {
+    const challenge = challenges[challengeKey];
+    return challenge.progress === 100 ? REWARD_COLORS[challengeKey] : '#999999';
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -37,36 +58,22 @@ const Profile = () => {
 
         <Text style={styles.sectionTitle}>Your rewards:</Text>
         <View style={styles.rewardsContainer}>
-          <View
-            style={[
-              styles.rewardIcon,
-              challenges.explorer.progress === 100 && styles.rewardAchieved,
-            ]}>
-            <Image
-              source={require('../../assets/icons/map.png')}
-              style={styles.icon}
+          <View style={[styles.rewardIcon, getRewardStyle('explorer')]}>
+            <Image 
+              source={CHALLENGE_ICONS.map} 
+              style={[styles.icon, { tintColor: getIconTintColor('explorer') }]} 
             />
           </View>
-          <View
-            style={[
-              styles.rewardIcon,
-              challenges.cuisineKnower.progress === 100 &&
-                styles.rewardAchieved,
-            ]}>
-            <Image
-              source={require('../../assets/icons/utensils.png')}
-              style={styles.icon}
+          <View style={[styles.rewardIcon, getRewardStyle('cuisineKnower')]}>
+            <Image 
+              source={CHALLENGE_ICONS.utensils} 
+              style={[styles.icon, { tintColor: getIconTintColor('cuisineKnower') }]} 
             />
           </View>
-          <View
-            style={[
-              styles.rewardIcon,
-              challenges.cuisineExpert.progress === 100 &&
-                styles.rewardAchieved,
-            ]}>
-            <Image
-              source={require('../../assets/icons/star.png')}
-              style={styles.icon}
+          <View style={[styles.rewardIcon, getRewardStyle('cuisineExpert')]}>
+            <Image 
+              source={CHALLENGE_ICONS.star} 
+              style={[styles.icon, { tintColor: getIconTintColor('cuisineExpert') }]} 
             />
           </View>
         </View>
@@ -134,22 +141,15 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   rewardIcon: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#1A1A1A',
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    opacity: 0.5,
-  },
-  rewardAchieved: {
-    backgroundColor: '#4CAF50',
-    opacity: 1,
   },
   icon: {
-    width: 60,
-    height: 60,
-    // tintColor: 'white',
+    width: 40,
+    height: 40,
   },
   challengesContainer: {
     gap: 20,
@@ -167,7 +167,6 @@ const styles = StyleSheet.create({
   challengeIcon: {
     width: 32,
     height: 32,
-    // tintColor: '#FF4B55',
     marginRight: 12,
   },
   challengeTitle: {
