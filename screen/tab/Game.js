@@ -14,7 +14,7 @@ const Game = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false} >
         <Text style={styles.title}>Guess The Dish</Text>
 
         <View style={styles.contentContainer}>
@@ -62,7 +62,9 @@ const Game = ({navigation}) => {
             ))}
           </View>
         </View>
+
       </ScrollView>
+      <View style={{height: 110}} />
     </View>
   );
 };

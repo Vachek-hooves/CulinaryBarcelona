@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions,ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 
@@ -45,7 +45,7 @@ const OnBoarding = ({navigation}) => {
     if (currentIndex < onboardingData.length - 1) {
       setCurrentIndex(currentIndex + 1)
     }else{
-      navigation.navigate('TabMenu')
+      navigation.navigate('TabMenu',{screen:'Main'})
     }
   }
 
@@ -70,13 +70,16 @@ const OnBoarding = ({navigation}) => {
         <Image
           source={onboardingData[currentIndex].image}
           style={styles.backgroundImage}
-        />
+          />
         <LinearGradient
           colors={['transparent', 'rgba(0,0,0,0.5)', 'rgba(0,0,0,0.8)', '#000000']}
           style={styles.gradient}
           locations={[0, 0.7, 0.8, 0.9]}
-        />
+          />
       </View>
+
+          <ScrollView>
+
       <View style={styles.contentContainer}>
         <Text style={styles.title}>{onboardingData[currentIndex].title}</Text>
         {onboardingData[currentIndex].description ? (
@@ -86,6 +89,7 @@ const OnBoarding = ({navigation}) => {
           <Text style={styles.buttonText}>{onboardingData[currentIndex].buttonText}</Text>
         </TouchableOpacity>
       </View>
+        </ScrollView>
     </View>
   )
 }

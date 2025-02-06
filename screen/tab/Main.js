@@ -34,6 +34,7 @@ const categories = [
   },
 ];
 import {useBarcelonaContext} from '../../store/context';
+import React from 'react';
 
 const Main = ({navigation}) => {
   const {favorites} = useBarcelonaContext();
@@ -113,6 +114,7 @@ const Main = ({navigation}) => {
               </View>
             </View>
           </ScrollView>
+           {/* <View style={{height: 110}} /> */}
         </LinearGradient>
       </ImageBackground>
     </View>

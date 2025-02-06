@@ -60,7 +60,7 @@ const Profile = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>My profile</Text>
 
         <Text style={styles.sectionTitle}>Your rewards:</Text>
@@ -130,6 +130,7 @@ const Profile = () => {
           <Text style={styles.shareButtonText}>Share</Text>
         </TouchableOpacity>
       </ScrollView>
+       <View style={{height: 70}} />
     </View>
   );
 };
