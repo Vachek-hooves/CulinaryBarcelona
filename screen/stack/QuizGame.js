@@ -1,22 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions, Alert } from 'react-native';
-import { useBarcelonaContext } from '../../store/context';
+import React, {useState, useEffect} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
+import {useBarcelonaContext} from '../../store/context';
+import GameOverModal from '../../components/ui/GameOverModal';
 
-const QuizGame = ({ route, navigation }) => {
-  const { quizData } = useBarcelonaContext();
-  const { levelIndex } = route.params;
+const QuizGame = ({route, navigation}) => {
+  const {quizData} = useBarcelonaContext();
+  const {levelIndex} = route.params;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(10);
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
-  
+  const [isGameOverModalVisible, setIsGameOverModalVisible] = useState(false);
+
   const currentLevel = quizData[levelIndex];
   const currentQuestion = currentLevel.questions[currentQuestionIndex];
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft((prevTime) => {
+      setTimeLeft(prevTime => {
         if (prevTime <= 1) {
           clearInterval(timer);
           handleGameOver();
@@ -30,23 +39,19 @@ const QuizGame = ({ route, navigation }) => {
   }, [currentQuestionIndex]);
 
   const handleGameOver = () => {
-    Alert.alert(
-      "Time's Up!",
-      `Game Over! Your score: ${score}`,
-      [
-        {
-          text: "OK",
-          onPress: () => navigation.navigate('Game')
-        }
-      ]
-    );
+    setIsGameOverModalVisible(true);
   };
 
-  const formatTime = (time) => {
+  const handleModalClose = () => {
+    setIsGameOverModalVisible(false);
+    navigation.navigate('TabMenu', {screen: 'Game'});
+  };
+
+  const formatTime = time => {
     return `00:${time < 10 ? '0' : ''}${time}`;
   };
 
-  const handleAnswerPress = (answer) => {
+  const handleAnswerPress = answer => {
     setSelectedAnswer(answer);
     const isCorrect = answer === currentQuestion.correctAnswer;
     setIsAnswerCorrect(isCorrect);
@@ -65,23 +70,23 @@ const QuizGame = ({ route, navigation }) => {
       } else {
         // Level completed
         Alert.alert(
-          "Level Complete!",
+          'Level Complete!',
           `Your final score: ${score + (isCorrect ? 1 : 0)}`,
           [
             {
-              text: "OK",
-              onPress: () => navigation.navigate('TabMenu',{screen:'Game'})
-            }
-          ]
+              text: 'OK',
+              onPress: () => navigation.navigate('TabMenu', {screen: 'Game'}),
+            },
+          ],
         );
       }
     }, 1000); // Show feedback for 1 second
   };
 
-  const getOptionStyle = (option) => {
+  const getOptionStyle = option => {
     if (selectedAnswer === option) {
       return {
-        backgroundColor: isAnswerCorrect ? '#4CAF50' : '#FF4B55'
+        backgroundColor: isAnswerCorrect ? '#4CAF50' : '#FF4B55',
       };
     }
     return {};
@@ -111,17 +116,20 @@ const QuizGame = ({ route, navigation }) => {
         {currentQuestion.options.map((option, index) => (
           <TouchableOpacity
             key={index}
-            style={[
-              styles.optionButton,
-              getOptionStyle(option)
-            ]}
+            style={[styles.optionButton, getOptionStyle(option)]}
             onPress={() => handleAnswerPress(option)}
-            disabled={selectedAnswer !== null}
-          >
+            disabled={selectedAnswer !== null}>
             <Text style={styles.optionText}>{option}</Text>
           </TouchableOpacity>
         ))}
       </View>
+
+      {/* Game Over Modal */}
+      <GameOverModal
+        isVisible={isGameOverModalVisible}
+        score={score}
+        onClose={handleModalClose}
+      />
     </View>
   );
 };
@@ -179,7 +187,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: '600',
-  }
+  },
 });
 
 export default QuizGame;
