@@ -1,5 +1,6 @@
 export const quiz = [
   {
+    isLocked: false,
     category: 'Guess the Dish',
     questions: [
       {
@@ -45,6 +46,7 @@ export const quiz = [
     ],
   },
   {
+    isLocked: true,
     category: 'Tapas',
     questions: [
       {
@@ -90,6 +92,7 @@ export const quiz = [
     ],
   },
   {
+    isLocked: true,
     category: 'Desserts',
     questions: [
       {
@@ -156,6 +159,7 @@ export const quiz = [
    
   },
   {
+    isLocked: true,
     category: 'Seafood',
     questions: [
       {
@@ -222,6 +226,7 @@ export const quiz = [
     
   },
   {
+    isLocked: true,
     category: 'Wine Bars',
     questions: [
       {
