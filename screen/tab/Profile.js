@@ -51,6 +51,10 @@ const Profile = () => {
     return challenge.progress === 100 ? REWARD_COLORS[challengeKey] : '#999999';
   };
 
+  const getChallengeIconStyle = (progress) => ({
+    tintColor: progress === 100 ? '#DF393E' : '#999999'
+  });
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -83,26 +87,27 @@ const Profile = () => {
           {Object.values(challenges).map((challenge, index) => (
             <View key={index} style={styles.challengeItem}>
               <View style={styles.challengeHeader}>
-                <Image
-                  source={CHALLENGE_ICONS[challenge.icon]}
-                  style={styles.challengeIcon}
+                <Image 
+                  source={CHALLENGE_ICONS[challenge.icon]} 
+                  style={[styles.challengeIcon, getChallengeIconStyle(challenge.progress)]} 
                 />
                 <View>
                   <Text style={styles.challengeTitle}>{challenge.title}</Text>
-                  <Text style={styles.challengeDescription}>
-                    {challenge.description}
-                  </Text>
+                  <Text style={styles.challengeDescription}>{challenge.description}</Text>
                 </View>
               </View>
-              <View style={styles.progressBar}>
-                <View
-                  style={[
-                    styles.progressFill,
-                    {width: `${challenge.progress}%`},
-                  ]}
-                />
+              <View style={styles.progressContainer}>
+                <View style={styles.progressBar}>
+                  <View 
+                    style={[
+                      styles.progressFill, 
+                      { width: `${challenge.progress}%` },
+                      challenge.progress === 100 && styles.progressComplete
+                    ]} 
+                  />
+                </View>
+                <Text style={styles.progressText}>{challenge.progress}%</Text>
               </View>
-              <Text style={styles.progressText}>{challenge.progress}%</Text>
             </View>
           ))}
         </View>
@@ -165,33 +170,43 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   challengeIcon: {
-    width: 32,
-    height: 32,
+    width: 24,
+    height: 24,
     marginRight: 12,
   },
   challengeTitle: {
     color: 'white',
     fontSize: 16,
     fontWeight: '600',
+    marginBottom: 4,
   },
   challengeDescription: {
     color: '#999999',
     fontSize: 14,
   },
+  progressContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   progressBar: {
+    flex: 1,
     height: 4,
     backgroundColor: '#333333',
     borderRadius: 2,
-    marginBottom: 8,
   },
   progressFill: {
     height: '100%',
-    backgroundColor: '#FF4B55',
+    backgroundColor: '#DF393E',
     borderRadius: 2,
+  },
+  progressComplete: {
+    backgroundColor: '#DF393E',
   },
   progressText: {
     color: '#999999',
     fontSize: 14,
+    minWidth: 45,
     textAlign: 'right',
   },
   shareButton: {
