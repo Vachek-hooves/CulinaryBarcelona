@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import React from 'react'
+import { quiz } from '../../data/quiz'
 
 const Game = ({ navigation }) => {
   return (
@@ -24,30 +25,25 @@ const Game = ({ navigation }) => {
         <Text style={styles.levelsTitle}>Levels:</Text>
 
         <View style={styles.levelsGrid}>
-          <TouchableOpacity style={[styles.levelButton, styles.activeLevel]}>
-            <Text style={[styles.levelNumber]}>1</Text>
-            <Text style={[styles.levelText]}>level</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.levelButton}>
-            <Text style={styles.levelNumber}>2</Text>
-            <Text style={styles.levelText}>level</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.levelButton}>
-            <Text style={styles.levelNumber}>3</Text>
-            <Text style={styles.levelText}>level</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.levelButton}>
-            <Text style={styles.levelNumber}>4</Text>
-            <Text style={styles.levelText}>level</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.levelButton}>
-            <Text style={styles.levelNumber}>5</Text>
-            <Text style={styles.levelText}>level</Text>
-          </TouchableOpacity>
+          {quiz.map((level, index) => (
+            <Pressable
+              key={index}
+              style={({ pressed }) => [
+                styles.levelButton,
+                !level.isLocked && styles.unlockedLevel,
+                pressed && !level.isLocked && styles.pressedLevel
+              ]}
+              disabled={level.isLocked}
+            >
+              <Text style={styles.levelNumber}>{index + 1}</Text>
+              <Text style={[
+                styles.levelText,
+                !level.isLocked && styles.unlockedLevelText
+              ]}>
+                level
+              </Text>
+            </Pressable>
+          ))}
         </View>
       </View>
     </View>
@@ -121,9 +117,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 12,
+    opacity: 0.5,
   },
-  activeLevel: {
+  unlockedLevel: {
     backgroundColor: '#FF4B55',
+    opacity: 1,
+  },
+  pressedLevel: {
+    opacity: 0.8,
   },
   levelNumber: {
     color: 'white',
@@ -134,6 +135,9 @@ const styles = StyleSheet.create({
   levelText: {
     color: '#999999',
     fontSize: 14,
+  },
+  unlockedLevelText: {
+    color: 'white',
   }
 })
 
