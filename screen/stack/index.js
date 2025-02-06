@@ -1,4 +1,4 @@
 import Intro from './Intro';
 import OnBoarding from './OnBoarding';
-
-export {Intro, OnBoarding};
+import QuizGame from './QuizGame';
+export {Intro, OnBoarding, QuizGame};

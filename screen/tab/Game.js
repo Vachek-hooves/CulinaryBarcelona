@@ -27,6 +27,7 @@ const Game = ({ navigation }) => {
         <View style={styles.levelsGrid}>
           {quiz.map((level, index) => (
             <Pressable
+              onPress={() => navigation.navigate('QuizGame', { levelIndex: index })}
               key={index}
               style={({ pressed }) => [
                 styles.levelButton,
