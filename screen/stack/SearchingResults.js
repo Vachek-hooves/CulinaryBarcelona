@@ -100,7 +100,7 @@ const SearchingResults = ({route, navigation}) => {
           <Text style={styles.categoryTitle}>{category.title}</Text>
           <TouchableOpacity
             style={styles.backButton}
-            // onPress={() => navigation.navigate('TabMenu', {screen: 'Main'})}
+            onPress={() => navigation.navigate('TabMenu', {screen: 'Main'})}
             >
             <Image
               source={require('../../assets/icons/home.png')}

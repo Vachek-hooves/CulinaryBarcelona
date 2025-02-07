@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Alert,
+  ScrollView,
 } from 'react-native';
 import {useBarcelonaContext} from '../../store/context';
 import GameOverModal from '../../components/ui/GameOverModal';
@@ -52,7 +53,7 @@ const QuizGame = ({route, navigation}) => {
     return `00:${time < 10 ? '0' : ''}${time}`;
   };
 
-  const handleAnswerPress = async (answer) => {
+  const handleAnswerPress = async answer => {
     setSelectedAnswer(answer);
     const isCorrect = answer === currentQuestion.correctAnswer;
     setIsAnswerCorrect(isCorrect);
@@ -71,15 +72,18 @@ const QuizGame = ({route, navigation}) => {
         setIsAnswerCorrect(null);
       } else {
         // Level completed
-        const allQuestionsAnswered = score + (isCorrect ? 1 : 0) === currentLevel.questions.length;
-        
+        const allQuestionsAnswered =
+          score + (isCorrect ? 1 : 0) === currentLevel.questions.length;
+
         if (allQuestionsAnswered) {
           unlockNextLevel(levelIndex);
         }
-        
+
         Alert.alert(
-          allQuestionsAnswered ? "Congratulations!" : "Level Complete",
-          `Your final score: ${score + (isCorrect ? 1 : 0)}${allQuestionsAnswered ? "\nNext level unlocked!" : ""}`,
+          allQuestionsAnswered ? 'Congratulations!' : 'Level Complete',
+          `Your final score: ${score + (isCorrect ? 1 : 0)}${
+            allQuestionsAnswered ? '\nNext level unlocked!' : ''
+          }`,
           [
             {
               text: 'OK',
@@ -102,42 +106,44 @@ const QuizGame = ({route, navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Level {levelIndex + 1}</Text>
+      <ScrollView>
+        <Text style={styles.title}>Level {levelIndex + 1}</Text>
 
-      {/* Timer */}
-      <View style={styles.timerContainer}>
-        <Text style={styles.timerText}>{formatTime(timeLeft)}</Text>
-      </View>
+        {/* Timer */}
+        <View style={styles.timerContainer}>
+          <Text style={styles.timerText}>{formatTime(timeLeft)}</Text>
+        </View>
 
-      {/* Score */}
-      <Text style={styles.score}>Score: {score}</Text>
+        {/* Score */}
+        <Text style={styles.score}>Score: {score}</Text>
 
-      {/* Question Image */}
-      <Image
-        source={currentQuestion.image}
-        style={styles.questionImage}
-        resizeMode="cover"
-      />
+        {/* Question Image */}
+        <Image
+          source={currentQuestion.image}
+          style={styles.questionImage}
+          resizeMode="cover"
+        />
 
-      {/* Answer Options */}
-      <View style={styles.optionsContainer}>
-        {currentQuestion.options.map((option, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[styles.optionButton, getOptionStyle(option)]}
-            onPress={() => handleAnswerPress(option)}
-            disabled={selectedAnswer !== null}>
-            <Text style={styles.optionText}>{option}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+        {/* Answer Options */}
+        <View style={styles.optionsContainer}>
+          {currentQuestion.options.map((option, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[styles.optionButton, getOptionStyle(option)]}
+              onPress={() => handleAnswerPress(option)}
+              disabled={selectedAnswer !== null}>
+              <Text style={styles.optionText}>{option}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
 
-      {/* Game Over Modal */}
-      <GameOverModal
-        isVisible={isGameOverModalVisible}
-        score={score}
-        onClose={handleModalClose}
-      />
+        {/* Game Over Modal */}
+        <GameOverModal
+          isVisible={isGameOverModalVisible}
+          score={score}
+          onClose={handleModalClose}
+        />
+      </ScrollView>
     </View>
   );
 };
