@@ -62,10 +62,10 @@ const Main = ({navigation}) => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../../assets/image/onboarding/i5.png')}
+        source={require('../../assets/image/bg/bg.png')}
         style={styles.backgroundImage}>
         <LinearGradient
-          colors={['transparent', 'rgba(0,0,0,0.8)', '#000000']}
+          colors={['transparent', 'rgba(0,0,0,0.1)', '#000000']}
           style={styles.gradient}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.content}>

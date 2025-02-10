@@ -5,6 +5,7 @@ import {
   Image,
   Pressable,
   ScrollView,
+  ImageBackground,
 } from 'react-native';
 import React from 'react';
 import {useBarcelonaContext} from '../../store/context';
@@ -14,57 +15,61 @@ const Game = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} >
-        <Text style={styles.title}>Guess The Dish</Text>
+      <ImageBackground
+        source={require('../../assets/image/bg/bg.png')}
+        style={styles.backgroundImage}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Text style={styles.title}>Guess The Dish</Text>
 
-        <View style={styles.contentContainer}>
-          <View style={styles.iconContainer}>
-            <Image
-              source={require('../../assets/icons/question.png')}
-              style={styles.questionIcon}
-            />
-          </View>
+          <View style={styles.contentContainer}>
+            <View style={styles.iconContainer}>
+              <Image
+                source={require('../../assets/icons/question.png')}
+                style={styles.questionIcon}
+              />
+            </View>
 
-          <Text style={styles.gameName}>Guess The Dish</Text>
+            <Text style={styles.gameName}>Guess The Dish</Text>
 
-          <Text style={styles.description}>
-            Welcome to the ultimate Barcelona food challenge! 🍽️{'\n\n'}
-            Test your knowledge of Catalan cuisine and become a true Barcelona foodie.{'\n\n'}
-            {/* In this game you have to guess which local dish of Barcelona is
+            <Text style={styles.description}>
+              Welcome to the ultimate Barcelona food challenge! 🍽️{'\n\n'}
+              Test your knowledge of Catalan cuisine and become a true Barcelona
+              foodie.{'\n\n'}
+              {/* In this game you have to guess which local dish of Barcelona is
             shown in the photo.{'\n'} */}
-            The time limit is 10 seconds.
-          </Text>
+              The time limit is 10 seconds.
+            </Text>
 
-          <Text style={styles.levelsTitle}>Levels:</Text>
+            <Text style={styles.levelsTitle}>Levels:</Text>
 
-          <View style={styles.levelsGrid}>
-            {quizData.map((level, index) => (
-              <Pressable
-                key={index}
-                onPress={() =>
-                  navigation.navigate('QuizGame', {levelIndex: index})
-                }
-                style={({pressed}) => [
-                  styles.levelButton,
-                  !level.isLocked && styles.unlockedLevel,
-                  pressed && !level.isLocked && styles.pressedLevel,
-                ]}
-                disabled={level.isLocked}>
-                <Text style={styles.levelNumber}>{index + 1}</Text>
-                <Text
-                  style={[
-                    styles.levelText,
-                    !level.isLocked && styles.unlockedLevelText,
-                  ]}>
-                  level
-                </Text>
-              </Pressable>
-            ))}
+            <View style={styles.levelsGrid}>
+              {quizData.map((level, index) => (
+                <Pressable
+                  key={index}
+                  onPress={() =>
+                    navigation.navigate('QuizGame', {levelIndex: index})
+                  }
+                  style={({pressed}) => [
+                    styles.levelButton,
+                    !level.isLocked && styles.unlockedLevel,
+                    pressed && !level.isLocked && styles.pressedLevel,
+                  ]}
+                  disabled={level.isLocked}>
+                  <Text style={styles.levelNumber}>{index + 1}</Text>
+                  <Text
+                    style={[
+                      styles.levelText,
+                      !level.isLocked && styles.unlockedLevelText,
+                    ]}>
+                    level
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
           </View>
-        </View>
-
-      </ScrollView>
-      <View style={{height: 110}} />
+        </ScrollView>
+        <View style={{height: 110}} />
+      </ImageBackground>
     </View>
   );
 };
@@ -108,7 +113,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   description: {
-    color: '#999999',
+    color: '#FFF',
     fontSize: 16,
     textAlign: 'center',
     lineHeight: 24,
@@ -152,7 +157,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   levelText: {
-    color: '#999999',
+    color: '#FFF',
     fontSize: 14,
   },
   unlockedLevelText: {

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Share,
+  ImageBackground,
 } from 'react-native';
 import {useBarcelonaContext} from '../../store/context';
 import MapModal from '../../components/ui/MapModal';
@@ -33,7 +34,9 @@ const Favorites = () => {
   const handleShare = async place => {
     try {
       await Share.share({
-        message: `Check out ${place.name}!\n\n${place.description}\n\nAddress: ${place.address}\nHours today: ${getTodayHours(place)}`,
+        message: `Check out ${place.name}!\n\n${
+          place.description
+        }\n\nAddress: ${place.address}\nHours today: ${getTodayHours(place)}`,
         title: place.name,
       });
     } catch (error) {
@@ -51,68 +54,72 @@ const Favorites = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Saved Spots</Text>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {favorites.map(place => (
-          <View key={place.id} style={styles.card}>
-            <Image source={{uri: place.image}} style={styles.placeImage} />
-            <View style={styles.categoryBadge}>
-              <Text style={styles.categoryText}>{place.category}</Text>
-            </View>
-
-            <View style={styles.infoContainer}>
-              <Text style={styles.placeName}>{place.name}</Text>
-              <Text style={styles.description}>{place.description}</Text>
-
-              <View style={styles.hoursContainer}>
-                <Image
-                  source={require('../../assets/icons/clock.png')}
-                  style={styles.clockIcon}
-                />
-                <Text style={styles.hoursText}>
-                  Hours: {getTodayHours(place)}
-                </Text>
+      <ImageBackground
+        source={require('../../assets/image/bg/bg.png')}
+        style={{flex:1}}>
+        <Text style={styles.title}>Saved Spots</Text>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {favorites.map(place => (
+            <View key={place.id} style={styles.card}>
+              <Image source={{uri: place.image}} style={styles.placeImage} />
+              <View style={styles.categoryBadge}>
+                <Text style={styles.categoryText}>{place.category}</Text>
               </View>
 
-              <View style={styles.actionButtons}>
-                <TouchableOpacity
-                  style={styles.mapsButton}
-                  onPress={() => setSelectedPlace(place)}>
-                  <Text style={styles.mapsButtonText}>Open in maps</Text>
-                </TouchableOpacity>
+              <View style={styles.infoContainer}>
+                <Text style={styles.placeName}>{place.name}</Text>
+                <Text style={styles.description}>{place.description}</Text>
 
-                <TouchableOpacity
-                  style={styles.iconButton}
-                  onPress={() => toggleFavorite(place)}>
+                <View style={styles.hoursContainer}>
                   <Image
-                    source={require('../../assets/icons/bookmark.png')}
-                    style={[styles.actionIcon, styles.actionIconActive]}
+                    source={require('../../assets/icons/clock.png')}
+                    style={styles.clockIcon}
                   />
-                </TouchableOpacity>
+                  <Text style={styles.hoursText}>
+                    Hours: {getTodayHours(place)}
+                  </Text>
+                </View>
 
-                <TouchableOpacity
-                  style={styles.iconButton}
-                  onPress={() => handleShare(place)}>
-                  <Image
-                    source={require('../../assets/icons/share.png')}
-                    style={styles.actionIcon}
-                  />
-                </TouchableOpacity>
+                <View style={styles.actionButtons}>
+                  <TouchableOpacity
+                    style={styles.mapsButton}
+                    onPress={() => setSelectedPlace(place)}>
+                    <Text style={styles.mapsButtonText}>Open in maps</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.iconButton}
+                    onPress={() => toggleFavorite(place)}>
+                    <Image
+                      source={require('../../assets/icons/bookmark.png')}
+                      style={[styles.actionIcon, styles.actionIconActive]}
+                    />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.iconButton}
+                    onPress={() => handleShare(place)}>
+                    <Image
+                      source={require('../../assets/icons/share.png')}
+                      style={styles.actionIcon}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
-        ))}
-      </ScrollView>
+          ))}
+        </ScrollView>
 
-      {selectedPlace && (
-        <MapModal
-          isVisible={true}
-          onClose={() => setSelectedPlace(null)}
-          coordinates={selectedPlace.coordinates}
-          placeName={selectedPlace.name}
-        />
-      )}
-      <View style={{height: 90}} />
+        {selectedPlace && (
+          <MapModal
+            isVisible={true}
+            onClose={() => setSelectedPlace(null)}
+            coordinates={selectedPlace.coordinates}
+            placeName={selectedPlace.name}
+          />
+        )}
+        <View style={{height: 90}} />
+      </ImageBackground>
     </View>
   );
 };
@@ -121,7 +128,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000000',
-    padding: 20,
+    // padding: 20,
   },
   title: {
     color: 'white',

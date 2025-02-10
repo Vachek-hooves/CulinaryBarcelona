@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Share,
   ScrollView,
+  ImageBackground,
 } from 'react-native';
 import React from 'react';
 import {useBarcelonaContext} from '../../store/context';
@@ -60,77 +61,81 @@ const Profile = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>My profile</Text>
+      <ImageBackground
+        source={require('../../assets/image/bg/bg.png')}
+        style={{flex: 1,paddingHorizontal:15}}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Text style={styles.title}>My profile</Text>
 
-        <Text style={styles.sectionTitle}>Your rewards:</Text>
-        <View style={styles.rewardsContainer}>
-          <View style={[styles.rewardIcon, getRewardStyle('explorer')]}>
-            <Image
-              source={CHALLENGE_ICONS.map}
-              style={[styles.icon, {tintColor: getIconTintColor('explorer')}]}
-            />
+          <Text style={styles.sectionTitle}>Your rewards:</Text>
+          <View style={styles.rewardsContainer}>
+            <View style={[styles.rewardIcon, getRewardStyle('explorer')]}>
+              <Image
+                source={CHALLENGE_ICONS.map}
+                style={[styles.icon, {tintColor: getIconTintColor('explorer')}]}
+              />
+            </View>
+            <View style={[styles.rewardIcon, getRewardStyle('cuisineKnower')]}>
+              <Image
+                source={CHALLENGE_ICONS.utensils}
+                style={[
+                  styles.icon,
+                  {tintColor: getIconTintColor('cuisineKnower')},
+                ]}
+              />
+            </View>
+            <View style={[styles.rewardIcon, getRewardStyle('cuisineExpert')]}>
+              <Image
+                source={CHALLENGE_ICONS.star}
+                style={[
+                  styles.icon,
+                  {tintColor: getIconTintColor('cuisineExpert')},
+                ]}
+              />
+            </View>
           </View>
-          <View style={[styles.rewardIcon, getRewardStyle('cuisineKnower')]}>
-            <Image
-              source={CHALLENGE_ICONS.utensils}
-              style={[
-                styles.icon,
-                {tintColor: getIconTintColor('cuisineKnower')},
-              ]}
-            />
-          </View>
-          <View style={[styles.rewardIcon, getRewardStyle('cuisineExpert')]}>
-            <Image
-              source={CHALLENGE_ICONS.star}
-              style={[
-                styles.icon,
-                {tintColor: getIconTintColor('cuisineExpert')},
-              ]}
-            />
-          </View>
-        </View>
 
-        <Text style={styles.sectionTitle}>Challenges:</Text>
-        <View style={styles.challengesContainer}>
-          {Object.values(challenges).map((challenge, index) => (
-            <View key={index} style={styles.challengeItem}>
-              <View style={styles.challengeHeader}>
-                <Image
-                  source={CHALLENGE_ICONS[challenge.icon]}
-                  style={[
-                    styles.challengeIcon,
-                    getChallengeIconStyle(challenge.progress),
-                  ]}
-                />
-                <View>
-                  <Text style={styles.challengeTitle}>{challenge.title}</Text>
-                  <Text style={styles.challengeDescription}>
-                    {challenge.description}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.progressContainer}>
-                <View style={styles.progressBar}>
-                  <View
+          <Text style={styles.sectionTitle}>Challenges:</Text>
+          <View style={styles.challengesContainer}>
+            {Object.values(challenges).map((challenge, index) => (
+              <View key={index} style={styles.challengeItem}>
+                <View style={styles.challengeHeader}>
+                  <Image
+                    source={CHALLENGE_ICONS[challenge.icon]}
                     style={[
-                      styles.progressFill,
-                      {width: `${challenge.progress}%`},
-                      challenge.progress === 100 && styles.progressComplete,
+                      styles.challengeIcon,
+                      getChallengeIconStyle(challenge.progress),
                     ]}
                   />
+                  <View>
+                    <Text style={styles.challengeTitle}>{challenge.title}</Text>
+                    <Text style={styles.challengeDescription}>
+                      {challenge.description}
+                    </Text>
+                  </View>
                 </View>
-                <Text style={styles.progressText}>{challenge.progress}%</Text>
+                <View style={styles.progressContainer}>
+                  <View style={styles.progressBar}>
+                    <View
+                      style={[
+                        styles.progressFill,
+                        {width: `${challenge.progress}%`},
+                        challenge.progress === 100 && styles.progressComplete,
+                      ]}
+                    />
+                  </View>
+                  <Text style={styles.progressText}>{challenge.progress}%</Text>
+                </View>
               </View>
-            </View>
-          ))}
-        </View>
+            ))}
+          </View>
 
-        <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
-          <Text style={styles.shareButtonText}>Share</Text>
-        </TouchableOpacity>
-      </ScrollView>
-       <View style={{height: 70}} />
+          <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
+            <Text style={styles.shareButtonText}>Share</Text>
+          </TouchableOpacity>
+        </ScrollView>
+        <View style={{height: 70}} />
+      </ImageBackground>
     </View>
   );
 };
@@ -139,7 +144,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000000',
-    padding: 20,
+    // padding: 20,
   },
   title: {
     color: 'white',
